@@ -1,8 +1,5 @@
 <?php
-
 /**
- *
- *
  * @category  Aligent
  * @package   ZipMoney_Api
  * @author    Andi Han <andi@aligent.com.au>
@@ -10,6 +7,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.aligent.com.au/
  */
+
 class ZipMoney_Api
 {
 
@@ -18,8 +16,10 @@ class ZipMoney_Api
     protected $_vMerchantKey;
 
     /**
-     * @param $environment
-     * @param $logHandler
+     * @param $vEnvironment
+     * @param $vMerchantId
+     * @param $vMerchantKey
+     * @param null $oLogHandler
      */
     public function __construct($vEnvironment, $vMerchantId, $vMerchantKey, $oLogHandler = null)
     {
@@ -43,8 +43,8 @@ class ZipMoney_Api
     }
 
     /**
-     * @param $requestData
-     * @param $requestUrl
+     * @param $vJson
+     * @param $vRequestUrl
      * @return Zend_Http_Response
      * @throws Zend_Http_Client_Exception
      */
@@ -54,7 +54,6 @@ class ZipMoney_Api
 
         $oClient = new Zend_Http_Client($vRequestUrl, $aHttpClientConfig);
         if ($vJson != null) {
-//            $vJson = json_encode($aRequestData);
             $oClient->setRawData($vJson, 'application/json')->setMethod(Zend_Http_Client::POST);
             $oClient->setHeaders(array(
                 'content-length' => strlen($vJson),
@@ -84,7 +83,7 @@ class ZipMoney_Api
     /**
      * call Zip API endpoint
      * @param $vEndpoint
-     * @param array $aRequestData
+     * @param $vJson
      * @return mixed|null|Zend_Http_Response
      */
     public function callZipApi($vEndpoint, $vJson)

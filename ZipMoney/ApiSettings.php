@@ -1,8 +1,5 @@
 <?php
-
 /**
- * 
- *
  * @category  Aligent
  * @package   ZipMoney_Api
  * @author    Andi Han <andi@aligent.com.au>
@@ -10,6 +7,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.aligent.com.au/
  */
+
 class ZipMoney_ApiSettings
 {
     const ENVIRONMENT_TEST    = 'sanbox';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @category  Aligent
- * @package   ZipMoney_Api
+ * @package   ZipMoney_SDK
  * @author    Andi Han <andi@aligent.com.au>
  * @copyright 2014 Aligent Consulting.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -10,7 +10,6 @@
 
 class ZipMoney_Api
 {
-
     protected $_oApiSettings;
     protected $_vMerchantId;
     protected $_vMerchantKey;
@@ -29,9 +28,18 @@ class ZipMoney_Api
         $this->_vMerchantKey = $vMerchantKey;
     }
 
+    /**
+     * Add ZipMoney API keys to the request, if not existed
+     *
+     * @param $aRequestData
+     * @return array
+     */
     protected function _addApiKeysToRequest($aRequestData)
     {
-        if(is_array($aRequestData)) {
+        if (!$aRequestData) {
+            $aRequestData = array();
+        }
+        if (is_array($aRequestData)) {
             if (!isset($aRequestData['merchant_id'])) {
                 $aRequestData['merchant_id'] = $this->_vMerchantId;
             }
@@ -43,6 +51,8 @@ class ZipMoney_Api
     }
 
     /**
+     * Make http request
+     *
      * @param $vJson
      * @param $vRequestUrl
      * @return Zend_Http_Response
@@ -67,7 +77,8 @@ class ZipMoney_Api
     }
 
     /**
-     * Get URL contents for Terms and Conditions modal
+     * Get content by url
+     *
      * @param $vUrl
      * @param int $iTimeout
      * @return Zend_Http_Response
@@ -81,10 +92,12 @@ class ZipMoney_Api
     }
 
     /**
-     * call Zip API endpoint
+     * Call ZipMoney API endpoint
+     *
      * @param $vEndpoint
      * @param $vJson
-     * @return mixed|null|Zend_Http_Response
+     * @return null|Zend_Http_Response
+     * @throws Exception
      */
     public function callZipApi($vEndpoint, $vJson)
     {
@@ -93,6 +106,10 @@ class ZipMoney_Api
         $aRequestData = $this->_addApiKeysToRequest($aRequestData);
         $vJson = json_encode($aRequestData);
         $vRequestUrl = $this->_oApiSettings->getUrl($vEndpoint);
+        if (!$vRequestUrl) {
+            $vMessage = 'Cannot get the endpoint url for type ' . $vEndpoint;
+            throw new Exception($vMessage);
+        }
         $oResponse = $this->request($vJson, $vRequestUrl);
         return $oResponse;
     }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @category  Aligent
- * @package   ZipMoney_Api
+ * @package   ZipMoney_SDK
  * @author    Andi Han <andi@aligent.com.au>
  * @copyright 2014 Aligent Consulting.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,7 +23,7 @@ class ZipMoney_ApiSettings
     const ENV_LIVE_ENDPOINT_CONFIGURE               = '';
     const ENV_LIVE_ENDPOINT_QUOTE                   = '';
     const ENV_LIVE_ENDPOINT_ORDER_SHIPPING_ADDRESS  = '';     // TODO: to be confirmed with ZipMoney
-    const ENV_LIVE_ENDPOINT_ORDER_CANCEL            = 'http://api.staging.zipmoney.com.au/v1/cancel';     // TODO: to be confirmed with ZipMoney
+    const ENV_LIVE_ENDPOINT_ORDER_CANCEL            = '';     // TODO: to be confirmed with ZipMoney
 
     const API_TYPE_MERCHANT_SETTINGS                = 'merchant_settings';
     const API_TYPE_MERCHANT_CONFIGURE               = 'merchant_configure';
@@ -38,6 +38,12 @@ class ZipMoney_ApiSettings
         $this->_vEnv = $vEnv;
     }
 
+    /**
+     * Get ZipMoney API endpoint url by type and environment
+     *
+     * @param $vType
+     * @return null|string
+     */
     public function getUrl($vType)
     {
         $vUrl = null;

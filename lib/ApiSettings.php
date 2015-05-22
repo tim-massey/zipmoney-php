@@ -10,20 +10,17 @@
 
 class ZipMoney_ApiSettings
 {
-    const ENVIRONMENT_TEST    = 'sanbox';
-    const ENVIRONMENT_LIVE    = 'production';
+    const ENVIRONMENT_TEST                          = 'sanbox';
+    const ENVIRONMENT_LIVE                          = 'production';
 
-    const ENV_TEST_ENDPOINT_SETTINGS                = 'http://api.staging.zipmoney.com.au/v1/settings';
-    const ENV_TEST_ENDPOINT_CONFIGURE               = 'http://api.staging.zipmoney.com.au/v1/configure';
-    const ENV_TEST_ENDPOINT_QUOTE                   = 'http://api.staging.zipmoney.com.au/v1/quote';
-    const ENV_TEST_ENDPOINT_ORDER_SHIPPING_ADDRESS  = 'http://api.staging.zipmoney.com.au/v1/order';     // TODO: to be confirmed with ZipMoney
-    const ENV_TEST_ENDPOINT_ORDER_CANCEL            = 'http://api.staging.zipmoney.com.au/v1/cancel';     // TODO: to be confirmed with ZipMoney
+    const ENV_TEST_BASE_URL                         = 'http://api.staging.zipmoney.com.au/v1/';
+    const ENV_LIVE_BASE_URL                         = 'https://api.zipmoney.com.au/v1/';
 
-    const ENV_LIVE_ENDPOINT_SETTINGS                = '';
-    const ENV_LIVE_ENDPOINT_CONFIGURE               = '';
-    const ENV_LIVE_ENDPOINT_QUOTE                   = '';
-    const ENV_LIVE_ENDPOINT_ORDER_SHIPPING_ADDRESS  = '';     // TODO: to be confirmed with ZipMoney
-    const ENV_LIVE_ENDPOINT_ORDER_CANCEL            = '';     // TODO: to be confirmed with ZipMoney
+    const ENDPOINT_SETTINGS                         = 'settings';
+    const ENDPOINT_CONFIGURE                        = 'configure';
+    const ENDPOINT_QUOTE                            = 'quote';
+    const ENDPOINT_ORDER_SHIPPING_ADDRESS           = 'order';
+    const ENDPOINT_ORDER_CANCEL                     = 'cancel';
 
     const API_TYPE_MERCHANT_SETTINGS                = 'merchant_settings';
     const API_TYPE_MERCHANT_CONFIGURE               = 'merchant_configure';
@@ -47,51 +44,33 @@ class ZipMoney_ApiSettings
     public function getUrl($vType)
     {
         $vUrl = null;
-        if($this->_isEnvLive()) {
-            switch ($vType) {
-                case self::API_TYPE_MERCHANT_SETTINGS:
-                    $vUrl = self::ENV_LIVE_ENDPOINT_SETTINGS;
-                    break;
-                case self::API_TYPE_MERCHANT_CONFIGURE:
-                    $vUrl = self::ENV_LIVE_ENDPOINT_CONFIGURE;
-                    break;
-                case self::API_TYPE_QUOTE_QUOTE:
-                    $vUrl = self::ENV_LIVE_ENDPOINT_QUOTE;
-                    break;
-                case self::API_TYPE_ORDER_SHIPPING_ADDRESS:
-                    $vUrl = self::ENV_LIVE_ENDPOINT_ORDER_SHIPPING_ADDRESS;
-                    break;
-                case self::API_TYPE_ORDER_CANCEL:
-                    $vUrl = self::ENV_LIVE_ENDPOINT_ORDER_CANCEL;
-                    break;
-                default:
-                    break;
-            }
+        $vBaseUrl = $this->_getApiBaseUrl();
+        $vEndPoint = '';
 
-        } else if($this->_isEnvTest()) {
-            switch ($vType) {
-                case self::API_TYPE_MERCHANT_SETTINGS:
-                    $vUrl = self::ENV_TEST_ENDPOINT_SETTINGS;
-                    break;
-                case self::API_TYPE_MERCHANT_CONFIGURE:
-                    $vUrl = self::ENV_TEST_ENDPOINT_CONFIGURE;
-                    break;
-                case self::API_TYPE_QUOTE_QUOTE:
-                    $vUrl = self::ENV_TEST_ENDPOINT_QUOTE;
-                    break;
-                case self::API_TYPE_ORDER_SHIPPING_ADDRESS:
-                    $vUrl = self::ENV_TEST_ENDPOINT_ORDER_SHIPPING_ADDRESS;
-                    break;
-                case self::API_TYPE_ORDER_CANCEL:
-                    $vUrl = self::ENV_TEST_ENDPOINT_ORDER_CANCEL;
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            // incorrect environment
-            return null;
+        switch ($vType) {
+            case self::API_TYPE_MERCHANT_SETTINGS:
+                $vEndPoint = self::ENDPOINT_SETTINGS;
+                break;
+            case self::API_TYPE_MERCHANT_CONFIGURE:
+                $vEndPoint = self::ENDPOINT_CONFIGURE;
+                break;
+            case self::API_TYPE_QUOTE_QUOTE:
+                $vEndPoint = self::ENDPOINT_QUOTE;
+                break;
+            case self::API_TYPE_ORDER_SHIPPING_ADDRESS:
+                $vEndPoint = self::ENDPOINT_ORDER_SHIPPING_ADDRESS;
+                break;
+            case self::API_TYPE_ORDER_CANCEL:
+                $vEndPoint = self::ENDPOINT_ORDER_CANCEL;
+                break;
+            default:
+                break;
         }
+
+        if ($vBaseUrl && $vEndPoint) {
+            $vUrl = $vBaseUrl . ltrim($vEndPoint, '/');
+        }
+
         return $vUrl;
     }
 
@@ -103,5 +82,16 @@ class ZipMoney_ApiSettings
     protected function _isEnvTest()
     {
         return ($this->_vEnv == self::ENVIRONMENT_TEST);
+    }
+
+    protected function _getApiBaseUrl()
+    {
+        $vBaseUrl = '';
+        if($this->_isEnvLive()) {
+            $vBaseUrl = self::ENV_LIVE_BASE_URL;
+        } else if($this->_isEnvTest()) {
+            $vBaseUrl = self::ENV_TEST_BASE_URL;
+        }
+        return $vBaseUrl;
     }
 }

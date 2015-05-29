@@ -21,12 +21,14 @@ class ZipMoney_ApiSettings
     const ENDPOINT_QUOTE                            = 'quote';
     const ENDPOINT_ORDER_SHIPPING_ADDRESS           = 'order';
     const ENDPOINT_ORDER_CANCEL                     = 'cancel';
+    const ENDPOINT_ORDER_REFUND                     = 'refund';
 
     const API_TYPE_MERCHANT_SETTINGS                = 'merchant_settings';
     const API_TYPE_MERCHANT_CONFIGURE               = 'merchant_configure';
     const API_TYPE_QUOTE_QUOTE                      = 'quote_quote';
     const API_TYPE_ORDER_SHIPPING_ADDRESS           = 'order_shipping_address';
     const API_TYPE_ORDER_CANCEL                     = 'order_cancel';
+    const API_TYPE_ORDER_REFUND                     = 'refund';
 
     protected $_vEnv;
 
@@ -62,6 +64,9 @@ class ZipMoney_ApiSettings
                 break;
             case self::API_TYPE_ORDER_CANCEL:
                 $vEndPoint = self::ENDPOINT_ORDER_CANCEL;
+                break;
+            case self::API_TYPE_ORDER_REFUND:
+                $vEndPoint = self::ENDPOINT_ORDER_REFUND;
                 break;
             default:
                 break;

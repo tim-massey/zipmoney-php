@@ -96,21 +96,32 @@ class ZipMoney_Api
      *
      * @param $vEndpoint
      * @param $vJson
+     * @param null $vEnvironment
      * @return null|Zend_Http_Response
      * @throws Exception
      */
-    public function callZipApi($vEndpoint, $vJson)
+    public function callZipApi($vEndpoint, $vJson, $vEnvironment = null)
     {
         $aRequestData = json_decode($vJson);
         $oResponse = null;
         $aRequestData = $this->_addApiKeysToRequest($aRequestData);
         $vJson = json_encode($aRequestData);
-        $vRequestUrl = $this->_oApiSettings->getUrl($vEndpoint);
+        $vRequestUrl = $this->_oApiSettings->getUrl($vEndpoint, $vEnvironment);
         if (!$vRequestUrl) {
             $vMessage = 'Cannot get the endpoint url for type ' . $vEndpoint;
             throw new Exception($vMessage);
         }
         $oResponse = $this->request($vJson, $vRequestUrl);
         return $oResponse;
+    }
+
+    public function getBaseUrl($vEnvironment = null)
+    {
+        return $this->_oApiSettings->getApiBaseUrl($vEnvironment);
+    }
+
+    public function getEndpointUrl($vType, $vEnvironment = null)
+    {
+        return $this->_oApiSettings->getUrl($vType, $vEnvironment);
     }
 }

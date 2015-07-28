@@ -45,12 +45,13 @@ class ZipMoney_ApiSettings
      * Get ZipMoney API endpoint url by type and environment
      *
      * @param $vType
+     * @param null $vEnvironment
      * @return null|string
      */
-    public function getUrl($vType)
+    public function getUrl($vType, $vEnvironment = null)
     {
         $vUrl = null;
-        $vBaseUrl = $this->getApiBaseUrl();
+        $vBaseUrl = $this->getApiBaseUrl($vEnvironment);
         $vEndPoint = '';
 
         switch ($vType) {

@@ -10,7 +10,7 @@
 
 class ZipMoney_ApiSettings
 {
-    const ENVIRONMENT_TEST                          = 'sanbox';
+    const ENVIRONMENT_TEST                          = 'sandbox';
     const ENVIRONMENT_LIVE                          = 'production';
 
     const ENV_TEST_BASE_URL                         = 'https://api.sandbox.zipmoney.com.au/v1/';

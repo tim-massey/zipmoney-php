@@ -55,12 +55,13 @@ class ZipMoney_Api
      *
      * @param $vJson
      * @param $vRequestUrl
+     * @param int $iTimeout
      * @return Zend_Http_Response
      * @throws Zend_Http_Client_Exception
      */
-    protected function request($vJson, $vRequestUrl)
+    protected function request($vJson, $vRequestUrl, $iTimeout = 60)
     {
-        $aHttpClientConfig = array('maxredirects' => 0);
+        $aHttpClientConfig = array('maxredirects' => 0, 'timeout' => $iTimeout);
 
         $oClient = new Zend_Http_Client($vRequestUrl, $aHttpClientConfig);
         if ($vJson != null) {
@@ -96,11 +97,12 @@ class ZipMoney_Api
      *
      * @param $vEndpoint
      * @param $vJson
+     * @param int $iTimeout
      * @param null $vEnvironment
      * @return null|Zend_Http_Response
      * @throws Exception
      */
-    public function callZipApi($vEndpoint, $vJson, $vEnvironment = null)
+    public function callZipApi($vEndpoint, $vJson, $iTimeout = 60, $vEnvironment = null)
     {
         $aRequestData = json_decode($vJson);
         $oResponse = null;
@@ -111,7 +113,7 @@ class ZipMoney_Api
             $vMessage = 'Cannot get the endpoint url for type ' . $vEndpoint;
             throw new Exception($vMessage);
         }
-        $oResponse = $this->request($vJson, $vRequestUrl);
+        $oResponse = $this->request($vJson, $vRequestUrl, $iTimeout);
         return $oResponse;
     }
 

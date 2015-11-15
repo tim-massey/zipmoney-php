@@ -8,7 +8,7 @@
  * @link      http://www.aligent.com.au/
  */
 
-class ZipMoney_ApiSettings
+class ZipMoney_ApiConfig
 {
     const ENVIRONMENT_TEST                          = 'sandbox';
     const ENVIRONMENT_LIVE                          = 'production';
@@ -53,7 +53,7 @@ class ZipMoney_ApiSettings
         $vUrl = null;
         $vBaseUrl = $this->getApiBaseUrl($vEnvironment);
         $vEndPoint = '';
-
+        
         switch ($vType) {
             case self::API_TYPE_MERCHANT_SETTINGS:
                 $vEndPoint = self::ENDPOINT_SETTINGS;
@@ -89,6 +89,50 @@ class ZipMoney_ApiSettings
 
         return $vUrl;
     }
+
+    /**
+     * Get ZipMoney API endpoint url by type and environment
+     *
+     * @param $vType
+     * @return null|string
+     */
+    public function getPath($vType)
+    {
+        
+        $vEndPoint = '';
+
+        switch ($vType) {
+            case self::API_TYPE_MERCHANT_SETTINGS:
+                $vEndPoint = self::ENDPOINT_SETTINGS;
+                break;
+            case self::API_TYPE_MERCHANT_CONFIGURE:
+                $vEndPoint = self::ENDPOINT_CONFIGURE;
+                break;
+            case self::API_TYPE_QUOTE_QUOTE:
+                $vEndPoint = self::ENDPOINT_QUOTE;
+                break;
+            case self::API_TYPE_ORDER_SHIPPING_ADDRESS:
+                $vEndPoint = self::ENDPOINT_ORDER_SHIPPING_ADDRESS;
+                break;
+            case self::API_TYPE_ORDER_CANCEL:
+                $vEndPoint = self::ENDPOINT_ORDER_CANCEL;
+                break;
+            case self::API_TYPE_ORDER_REFUND:
+                $vEndPoint = self::ENDPOINT_ORDER_REFUND;
+                break;
+            case self::API_TYPE_CHECKOUT:
+                $vEndPoint = self::ENDPOINT_CHECKOUT;
+                break;
+            case self::API_TYPE_HEART_BEAT:
+                $vEndPoint = self::ENDPOINT_HEART_BEAT;
+                break;
+            default:
+                break;
+        }
+
+        return $vEndPoint;
+    }
+
 
     protected function _isEnvLive($vEnvironment = null)
     {

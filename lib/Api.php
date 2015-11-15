@@ -1,129 +1,277 @@
 <?php
 /**
- * @category  Aligent
+ * @category  ZipMoney
  * @package   ZipMoney_SDK
- * @author    Andi Han <andi@aligent.com.au>
- * @copyright 2014 Aligent Consulting.
+ * @author    Sagar Bhandari <sagar.bhandari@zipmoney.com.au>
+ * @copyright 2015 ZipMoney Payments.
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link      http://www.aligent.com.au/
+ * @link      http://www.zipmoney.com.au/
  */
 
 class ZipMoney_Api
 {
-    protected $_oApiSettings;
-    protected $_vMerchantId;
-    protected $_vMerchantKey;
+    protected $_apiConfig = null;
+    
+    protected $_merchantId  = null;
+    
+    protected $_merchantKey = null;
+    
+    protected $_client = null;
+    
+    protected $_params = array();
+    
+    private   $_apiVersion = "1.0.0";
+
+    private   $_apiHeaders = array();
+    
+    private   $_type = array("json" => "application/json","xml"=>"application/xml");
+
+    const   USER_AGENT  = "ZipMoney PHP SDK";
+
+    const   API_VERSION = "1.0.0";
+
 
     /**
-     * @param $vEnvironment
-     * @param $vMerchantId
-     * @param $vMerchantKey
-     * @param null $oLogHandler
+     * @param $environment
+     * @param $merchantId
+     * @param $merchantKey
+     * @param $type
+     * @param $config
      */
-    public function __construct($vEnvironment, $vMerchantId, $vMerchantKey, $oLogHandler = null)
+    public function __construct($merchantId, $merchantKey, $environment,  $type = "json", $config = null)
     {
+        
+ 
+        if(!$merchantId)
+            throw new  ZipMoney_Exception_Http("Merchant Id should be provided", 1);
+
+        if(!$merchantKey)
+            throw new  ZipMoney_Exception_Http("Merchant Key should be provided", 1);
+
+        if(!$environment)
+            throw new  ZipMoney_Exception_Http("Environment should be provided", 1);
+
         /** @var ZipMoney_ApiSettings $apiSettings */
-        $this->_oApiSettings = new ZipMoney_ApiSettings($vEnvironment);
-        $this->_vMerchantId = $vMerchantId;
-        $this->_vMerchantKey = $vMerchantKey;
+        $this->_apiConfig   = new ZipMoney_ApiConfig($environment);
+        $this->_client      = new ZipMoney_Http($this->_apiConfig->getApiBaseUrl(),$type,$config);
+
+
+
+        $this->_merchantId  = $merchantId;
+        $this->_merchantKey = $merchantKey;   
+
+        $this->_setApiHeaders($type);
+
+        $this->_client->setHttpHeader($this->_apiHeaders);
+
     }
 
     /**
-     * Add ZipMoney API keys to the request, if not existed
+     * Call checkout method on the endpoint
      *
-     * @param $aRequestData
-     * @return array
+     * @param  $orderArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
      */
-    protected function _addApiKeysToRequest($aRequestData)
+    public function checkout($orderArray)
     {
-        if (!$aRequestData) {
-            $aRequestData = array();
-        }
-        if (is_array($aRequestData)) {
-            if (!isset($aRequestData['merchant_id'])) {
-                $aRequestData['merchant_id'] = $this->_vMerchantId;
-            }
-            if (!isset($aRequestData['merchant_key'])) {
-                $aRequestData['merchant_key'] = $this->_vMerchantKey;
-            }
-        }
-        return $aRequestData;
+       $method = $this->_apiConfig->getPath(__FUNCTION__);
+       
+       if(!is_array($orderArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+
+    return $this->request($method, $orderArray);
     }
 
     /**
-     * Make http request
+     * Call quote method on the endpoint
      *
-     * @param $vJson
-     * @param $vRequestUrl
-     * @param int $iTimeout
-     * @return Zend_Http_Response
-     * @throws Zend_Http_Client_Exception
+     * @param  $quoteArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
      */
-    protected function request($vJson, $vRequestUrl, $iTimeout = 60)
-    {
-        $aHttpClientConfig = array('maxredirects' => 0, 'timeout' => $iTimeout);
+    public function quote($quoteArray)
+    {        
+        $method = $this->_apiConfig->getPath(__FUNCTION__);
 
-        $oClient = new Zend_Http_Client($vRequestUrl, $aHttpClientConfig);
-        if ($vJson != null) {
-            $oClient->setRawData($vJson, 'application/json')->setMethod(Zend_Http_Client::POST);
-            $oClient->setHeaders(array(
-                'content-length' => strlen($vJson),
-                'content-type' => 'application/json'));
-        } else {
-            $oClient->setMethod(Zend_Http_Client::GET);
-        }
+        if(!is_array($quoteArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
 
-        $oResponse = $oClient->request();
-        return $oResponse;
+    return $this->request($method,$quoteArray);
     }
 
     /**
-     * Get content by url
+     * Call refund method on the endpoint
      *
-     * @param $vUrl
-     * @param int $iTimeout
-     * @return Zend_Http_Response
-     * @throws Zend_Http_Client_Exception
+     * @param  $refundArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
      */
-    public function getUrlContent($vUrl, $iTimeout = 60)
+    public function refund($refundArray)
     {
-        $oClient = new Zend_Http_Client($vUrl, array('timeout' => $iTimeout));
-        $oResponse = $oClient->request();
-        return $oResponse;
+        $method = $this->_apiConfig->getPath(__FUNCTION__);
+        
+        if(!is_array($refundArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+
+    return $this->request($method,$refundArray);
+    }
+
+    /**
+     * Call cancel method on the endpoint
+     *
+     * @param  $cancelArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
+     */
+    public function cancel($cancelArray)
+    {       
+       $method = $this->_apiConfig->getPath(__FUNCTION__);
+        
+        if(!is_array($cancelArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+
+    return $this->request($method,$cancelArray);
+    }
+
+    /**
+     * Call query method on the endpoint
+     *
+     * @param  $queryArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
+     */
+    public function query($queryArray)
+    {       
+        $method = $this->_apiConfig->getPath(__FUNCTION__);
+        
+        if(!is_array($queryArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+
+    return $this->request($method,$queryArray);
+    }
+
+    /**
+     * Call settings method on the endpoint
+     *
+     * @param  $queryArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
+     */
+    public function settings()
+    {       
+        $method = $this->_apiConfig->getPath(__FUNCTION__);
+   
+    return $this->request($method,array());
+    }
+
+    /**
+     * Call heartbeat method on the endpoint
+     *
+     * @param  $captureArray
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
+     */
+    public function hearbeat()
+    {
+        $method = $this->_apiConfig->getPath(__FUNCTION__);
+      
+    return  $this->request($method);
+    }
+
+
+    /**
+     * Get base url
+     *
+     * @param $environment
+     * @return String
+     */
+    public function getBaseUrl($environment = null)
+    {
+        return $this->_apiConfig->getApiBaseUrl($environment);
+    }
+
+    /**
+     * Get endpoint url
+     *
+     * @param $type
+     * @param $environment
+     * @return String
+     */
+    public function getEndpointUrl($endpointType, $environment = null)
+    {
+        return $this->_apiConfig->getUrl($endpointType, $environment);
+    }
+
+
+    /**
+     * Add Http Headers   
+     *  
+     * @param $type
+     */
+    protected function _setApiHeaders($type)
+    {
+         
+         $this->_apiHeaders[] = 'Accept: '.$this->_type[$type];
+
+         $this->_apiHeaders[] = 'Content-Type: '.$this->_type[$type];
+
+         $this->_apiHeaders[] = 'User-Agent: ' . self::USER_AGENT;
+
+         $this->_apiHeaders[] = 'Api-Version: ' . self::API_VERSION;
+
+    }
+
+    /**
+     * 
+     * Add ZipMoney API keys to the request, if not already
+     *
+     */
+    protected  function _addApiKeys()
+    {
+
+        if (!isset($this->_params['merchant_id'])) {
+            $this->_params['merchant_id'] = $this->_merchantId;
+        }
+
+        if (!isset($this->_params['merchant_key'])) { 
+            $this->_params['merchant_key'] = $this->_merchantKey;
+        }
+
     }
 
     /**
      * Call ZipMoney API endpoint
      *
-     * @param $vEndpoint
-     * @param $vJson
-     * @param int $iTimeout
-     * @param null $vEnvironment
-     * @return null|Zend_Http_Response
-     * @throws Exception
+     * @param $method
+     * @param $params
+     * @param int $timeout
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
      */
-    public function callZipApi($vEndpoint, $vJson, $iTimeout = 60, $vEnvironment = null)
+    protected function _request($method, $params = null, $timeout = 60)
     {
-        $aRequestData = json_decode($vJson);
-        $oResponse = null;
-        $aRequestData = $this->_addApiKeysToRequest($aRequestData);
-        $vJson = json_encode($aRequestData);
-        $vRequestUrl = $this->_oApiSettings->getUrl($vEndpoint, $vEnvironment);
-        if (!$vRequestUrl) {
-            $vMessage = 'Cannot get the endpoint url for type ' . $vEndpoint;
-            throw new Exception($vMessage);
+        $config = array('timeout' => $timeout);
+
+        if(!isset($method) || empty($method))
+            throw new ZipMoney_Exception("Api method not provided", 1);
+        
+        $this->_params = $params;
+   
+        $this->_addApiKeys();
+
+        // if params is provided, consider it as a POST 
+        if($params){      
+
+           $response = $this->_client->post($method,$this->_params);
+        }     
+        else {
+
+           $response = $this->_client->get($method,$this->_params);
         }
-        $oResponse = $this->request($vJson, $vRequestUrl, $iTimeout);
-        return $oResponse;
+
+       return new ZipMoney_Response($response);
     }
 
-    public function getBaseUrl($vEnvironment = null)
-    {
-        return $this->_oApiSettings->getApiBaseUrl($vEnvironment);
-    }
-
-    public function getEndpointUrl($vType, $vEnvironment = null)
-    {
-        return $this->_oApiSettings->getUrl($vType, $vEnvironment);
-    }
+    
 }

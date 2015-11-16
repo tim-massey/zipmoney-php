@@ -66,6 +66,13 @@ class ZipMoney_Response
         }
     }
 
+    public function getRedirectUrl()
+    {
+        $responseArray = $this->toArray();
+
+       return isset($responseArray['redirect_url']) && !empty($responseArray['redirect_url']) ? $responseArray['redirect_url']:null; 
+    }
+
     public function getStatusCode()
     {
         return $this->_statusCode;

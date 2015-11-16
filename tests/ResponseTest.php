@@ -52,4 +52,16 @@ class ZipMoney_ResponseTest extends ZipMoneyTestMain
 
     }
 
+    // public function testGetRedirectUrl()
+    // {
+
+    //     $http     = new ZipMoney_Http($this->zApiConfig->getApiBaseUrl());
+    //     $http->setHttpHeader($this->_apiHeaders);
+
+    //     $response = $http->post($this->zApiConfig->getPath("merchant_settings"),$this->params);
+    //     $rObj     = new ZipMoney_Response($response);
+    //     $this->assertTrue(is_object($rObj->toObject()));
+
+    // }
+
 }

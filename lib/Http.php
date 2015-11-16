@@ -17,6 +17,8 @@ class ZipMoney_Http
     private $_config          = array();
 
     private $_httpHeader      = array();
+    
+    private $_responseHeader  = array();
 
 
     public function __construct($baseEndpointUrl, $type = "json", $config=null)
@@ -26,6 +28,7 @@ class ZipMoney_Http
             throw new  ZipMoney_Exception_Http("Request endpoint url should be Provided", 1);
             
         $this->_baseEndpointUrl = $baseEndpointUrl;
+
 
         if(is_array($config))
             $this->_config   = $config;
@@ -93,18 +96,28 @@ class ZipMoney_Http
          $this->_httpHeader = $headers;
     }
 
+    private function _responseHeader( $curl, $header_line )
+    {   
+        if($header_line)
+           $this->_responseHeader[] = $header_line;
+        return strlen($header_line);
+    }
+
     private function _curlRequest($httpMethod, $requestBody = null)
     {
+        $this->_responseHeader = array(); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpMethod);
         curl_setopt($curl, CURLOPT_URL, $this->getEndPointUrl());
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
-        
+        curl_setopt($curl, CURLOPT_HEADERFUNCTION, array($this,'_responseHeader'));
+
         if($this->_httpHeader)
             curl_setopt($curl, CURLOPT_HTTPHEADER, $this->_httpHeader);
 
-        // curl_setopt($curl, CURLOPT_VERBOSE, true);
+       // curl_setopt($curl, CURLOPT_HEADER, 1);
+      //  curl_setopt($curl, CURLOPT_VERBOSE, true);
 
         # If SSL flag is true
         if ($this->_config && $this->_config['ssl']){
@@ -114,18 +127,22 @@ class ZipMoney_Http
         }
 
         if(!empty($requestBody)) {
+            //print_r($requestBody);
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($requestBody));
         }
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        $httpStatus = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $response    = curl_exec($curl);
+        $httpStatus  = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $header      = substr($response, 0, $header_size);
         curl_close($curl);
+
         if ($this->_config && $this->_config['ssl']){
             if ($httpStatus == 0) {
                 throw new ZipMoney_Exception_Http();
             }
         }
-        return array('status' => $httpStatus, 'body' => $response);
+        return array('status' => $httpStatus, 'body' => $response,'header'=>$this->_responseHeader);
     }
 }

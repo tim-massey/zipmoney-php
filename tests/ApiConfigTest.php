@@ -22,6 +22,8 @@ class ZipMoney_ApiConfigTest extends ZipMoneyTestMain
         $this->assertEquals("https://api.sandbox.zipmoney.com.au/v1/order", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_SHIPPING_ADDRESS,ZipMoney_ApiConfig::ENVIRONMENT_TEST));
         $this->assertEquals("https://api.sandbox.zipmoney.com.au/v1/cancel", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_CANCEL,ZipMoney_ApiConfig::ENVIRONMENT_TEST));
         $this->assertEquals("https://api.sandbox.zipmoney.com.au/v1/refund", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_REFUND,ZipMoney_ApiConfig::ENVIRONMENT_TEST));
+        $this->assertEquals("https://api.sandbox.zipmoney.com.au/v1/query", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_QUERY,ZipMoney_ApiConfig::ENVIRONMENT_TEST));
+        $this->assertEquals("https://api.sandbox.zipmoney.com.au/v1/capture", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_CAPTURE,ZipMoney_ApiConfig::ENVIRONMENT_TEST));
 
         //Testing Production Urls
         $this->assertEquals("https://api.zipmoney.com.au/v1/settings", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_MERCHANT_SETTINGS,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
@@ -32,6 +34,8 @@ class ZipMoney_ApiConfigTest extends ZipMoneyTestMain
         $this->assertEquals("https://api.zipmoney.com.au/v1/order", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_SHIPPING_ADDRESS,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
         $this->assertEquals("https://api.zipmoney.com.au/v1/cancel", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_CANCEL,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
         $this->assertEquals("https://api.zipmoney.com.au/v1/refund", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_ORDER_REFUND,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
+        $this->assertEquals("https://api.zipmoney.com.au/v1/query", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_QUERY,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
+        $this->assertEquals("https://api.zipmoney.com.au/v1/capture", $this->zApiConfig->getUrl( ZipMoney_ApiConfig::API_TYPE_CAPTURE,ZipMoney_ApiConfig::ENVIRONMENT_LIVE));
 
         
     }
@@ -46,9 +50,7 @@ class ZipMoney_ApiConfigTest extends ZipMoneyTestMain
         $this->assertEquals("order", $this->zApiConfig->getPath( ZipMoney_ApiConfig::API_TYPE_ORDER_SHIPPING_ADDRESS));
         $this->assertEquals("cancel", $this->zApiConfig->getPath( ZipMoney_ApiConfig::API_TYPE_ORDER_CANCEL));
         $this->assertEquals("refund", $this->zApiConfig->getPath( ZipMoney_ApiConfig::API_TYPE_ORDER_REFUND));
+        $this->assertEquals("query", $this->zApiConfig->getPath( ZipMoney_ApiConfig::API_TYPE_QUERY));
  
     }
-
-    
-
 }

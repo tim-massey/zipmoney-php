@@ -23,6 +23,8 @@ class ZipMoney_ApiConfig
     const ENDPOINT_ORDER_CANCEL                     = 'cancel';
     const ENDPOINT_ORDER_REFUND                     = 'refund';
     const ENDPOINT_CHECKOUT                         = 'checkout';
+    const ENDPOINT_QUERY                            = 'query';
+    const ENDPOINT_CAPTURE                          = 'capture';
     const ENDPOINT_HEART_BEAT                       = 'Heartbeat';
 
     const API_TYPE_MERCHANT_SETTINGS                = 'merchant_settings';
@@ -32,6 +34,8 @@ class ZipMoney_ApiConfig
     const API_TYPE_ORDER_CANCEL                     = 'order_cancel';
     const API_TYPE_ORDER_REFUND                     = 'refund';
     const API_TYPE_CHECKOUT                         = 'checkout';
+    const API_TYPE_QUERY                            = 'query';
+    const API_TYPE_CAPTURE                          = 'capture';
     const API_TYPE_HEART_BEAT                       = 'heartbeat';
 
     protected $_vEnv;
@@ -75,6 +79,12 @@ class ZipMoney_ApiConfig
                 break;
             case self::API_TYPE_CHECKOUT:
                 $vEndPoint = self::ENDPOINT_CHECKOUT;
+                break;
+            case self::API_TYPE_QUERY:
+                $vEndPoint = self::ENDPOINT_QUERY;
+                break;
+            case self::API_TYPE_CAPTURE:
+                $vEndPoint = self::ENDPOINT_CAPTURE;
                 break;
             case self::API_TYPE_HEART_BEAT:
                 $vEndPoint = self::ENDPOINT_HEART_BEAT;
@@ -122,6 +132,12 @@ class ZipMoney_ApiConfig
                 break;
             case self::API_TYPE_CHECKOUT:
                 $vEndPoint = self::ENDPOINT_CHECKOUT;
+                break;  
+            case self::API_TYPE_QUERY:
+                $vEndPoint = self::ENDPOINT_QUERY;
+                break;            
+            case self::API_TYPE_CAPTURE:
+                $vEndPoint = self::ENDPOINT_CAPTURE;
                 break;
             case self::API_TYPE_HEART_BEAT:
                 $vEndPoint = self::ENDPOINT_HEART_BEAT;

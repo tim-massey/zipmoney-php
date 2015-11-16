@@ -14,6 +14,8 @@ class ZipMoney_Response
 
     private $_responseBody   = null;
 
+    private $_responseHeader = null;
+
     private $_statusCode     = null;
 
     public function __construct($response)
@@ -22,9 +24,9 @@ class ZipMoney_Response
         if(!isset($response) || empty($response)) 
             throw new  ZipMoney_Exception("Response Empty", 1);
         
-        $this->_response     = $response;
         $this->_statusCode   = $response['status'];
         $this->_responseBody = $response['body'];
+        $this->_responseHeader = $response['header'];
 
     }
 

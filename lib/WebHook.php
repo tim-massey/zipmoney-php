@@ -8,7 +8,7 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class ZipMoney_WebHook
+class ZipMoney_Api
 {
     protected $_apiConfig = null;
     

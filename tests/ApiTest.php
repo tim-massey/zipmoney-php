@@ -18,7 +18,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
 
     public function testCheckout()
     {
-        $input = (array)json_decode(file_get_contents("./tests/files/checkout.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/checkout.json"));
         $input['order_id'] = rand(10000,9999999);   
         self::$_current_order_id = $input['order_id'];
         $input['order']->id =  self::$_current_order_id;   
@@ -45,7 +45,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testQuote()
     {
 
-        $input = (array)json_decode(file_get_contents("./tests/files/quote.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/quote.json"));
         $input['order_id']  =  self::$_current_order_id;   
         $input['order']->id =  self::$_current_order_id;   
         $input['txn_id']    =  self::$_txn_id;   
@@ -64,7 +64,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testQuery()
     {
 
-        $input = (array)json_decode(file_get_contents("./tests/files/query.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/query.json"));
         $input['orders'][0]->id     =  self::$_current_order_id;   
         $input['orders'][0]->txn_id =  self::$_txn_id;   
 
@@ -95,7 +95,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testCancel()
     {
 
-        $input = (array)json_decode(file_get_contents("./tests/files/cancel.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/cancel.json"));
         $input['order_id']  =  self::$_current_order_id;   
         $input['order']->id =  self::$_current_order_id;   
         $input['txn_id']    =  self::$_txn_id;   
@@ -113,7 +113,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testRefund()
     {
 
-        $input = (array)json_decode(file_get_contents("./tests/files/refund.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/refund.json"));
         $input['order_id']  =  self::$_current_order_id;   
         $input['order']->id =  self::$_current_order_id;   
         $input['txn_id']    = '2105-yE1xB0btXw';// self::$_txn_id;   
@@ -136,7 +136,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     {
         
     
-        $input = (array)json_decode(file_get_contents("./tests/files/capture.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/capture.json"));
         $input['order_id']  = self::$_current_order_id;   
         $input['order']->id = self::$_current_order_id;   
         $input['txn_id']    = self::$_txn_id;   
@@ -166,7 +166,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testConfigure()
     {
         
-        $input = (array)json_decode(file_get_contents("./tests/files/configure.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/configure.json"));
         $response      = $this->zApi->configure($input);
         $responseArray = $response->toArray();
 
@@ -178,7 +178,7 @@ class ZipMoney_ApiTest extends ZipMoneyTestMain
     public function testSettings()
     {
         
-        $input = (array)json_decode(file_get_contents("./tests/files/configure.json"));
+        $input = (array)json_decode(file_get_contents("./tests/fixtures/configure.json"));
         $response      = $this->zApi->settings($input);
         $responseArray = $response->toArray();
 

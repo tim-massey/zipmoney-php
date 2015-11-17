@@ -8,7 +8,7 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class ZipMoney_Api_Express
+class ZipMoney_ApiExpress
 {
     const ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS     = 'get_shipping_methods';
     const ACTION_RESPONSE_TYPE_GET_QUOTE_DETAILS        = 'get_quote_details';
@@ -55,7 +55,6 @@ class ZipMoney_Api_Express
         
     }
 
-
     /*
      * Call checkout method on the endpoint
      *
@@ -63,7 +62,7 @@ class ZipMoney_Api_Express
      * @return ZipMoney_Response
      * @throws ZipMoney_Exception_Http
      */
-    public function getShippingMethods($orderArray)
+    public function processShippingMethods($orderArray)
     {
        $method = $this->_apiConfig->getPath(__FUNCTION__);
        

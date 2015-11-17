@@ -59,6 +59,13 @@ abstract class ZipMoney_WebHook
 
     }
 
+    /*
+     * Validate credentials contained in WebHook Request
+     *
+     * @param  $merchantId
+     * @param  $merchantKey
+     * @return true|false
+     */
     private function _validateCredentials($merchantId,$merchantKey)
     {
 
@@ -71,6 +78,12 @@ abstract class ZipMoney_WebHook
         
     }
 
+
+    /*
+     * Listen for WebHook Request
+     *
+     * @param  $params
+     */
     public function listen()
     {
         $data = file_get_contents("php://input");
@@ -80,109 +93,195 @@ abstract class ZipMoney_WebHook
 
         $params = json_decode($data);
 
-        $this->_processWebHookRequest($params);
-    }
-
-
-    protected function _processWebHookRequest($params)
-    {
-
-
         if ($params->Type == 'SubscriptionConfirmation') {
             
             $this->_subscribe($params->SubscribeURL);
 
         } else if ($params->Type == 'Notification') {
+            
+            $this->_processRequest($params);
 
-            if (!$params->Message)
-                throw new ZipMoney_Exception("Notification message cannot be empty");
+        }
+    }
 
-            $message  = json_decode($params->Message);
+    /*
+     * Process WebHook Request
+     *
+     * @param  $params
+     */
+    protected function _processRequest($params)
+    {
 
-            if (!$message->response)
-                throw new ZipMoney_Exception("Notification response cannot be empty");
+        if (!$params->Message)
+            throw new ZipMoney_Exception("Notification message cannot be empty");
 
-            if($this->_validateCredentials($message->response->merchantId,$message->response->merchantKey))
-                throw new ZipMoney_Exception("Merchant Credentials donot match");
+        $message  = json_decode($params->Message);
 
-            if($message->response->type)
-                $this->_processEvent();
+        if (!$message->response)
+            throw new ZipMoney_Exception("Notification response cannot be empty");
 
-            switch ($message->response->type) {
-                case EVENT_TYPE_AUTH_SUCCESS:
-                    # code...
-                    // $this->eventAuthSuccess();
-                    break;
-                
-                case EVENT_TYPE_AUTH_FAIL:
-                    # code... 
-                    // $this->eventAuthFail();
-                    break;
-                
-                case EVENT_TYPE_AUTH_REVIEW:
-                    # code...
-                    // $this->eventAuthReview();
-                    break;
-                
-                case EVENT_TYPE_CANCEL_SUCCESS:
-                    # code...
-                    // $this->eventCancelSuccess();
-                    break;
-                
-                case EVENT_TYPE_CANCEL_FAIL:
-                    # code...
-                    // $this->eventCancelFail();
-                    break;
-                
-                case EVENT_TYPE_CAPTURE_SUCCESS:
-                    # code...
-                    // $this->eventCaptureSuccess();
-                    break;
-                
-                case EVENT_TYPE_CAPTURE_FAIL:
-                    # code...
-                    // $this->eventCaptureFail();
-                    break;
-                
-                case EVENT_TYPE_REFUND_SUCCESS:
-                    # code...
-                    // $this->eventRefundSuccess();
-                    break;
-                
-                case EVENT_TYPE_REFUND_FAIL:
-                    # code...
-                    // $this->eventRefundFail();
-                    break;
-                
-                case EVENT_TYPE_ORDER_CANCELLED:
-                    # code...
-                    // $this->eventOrderCancel();
-                    break;
-                
-                case EVENT_TYPE_CHARGE_SUCCESS:
-                    # code...
-                    // $this->eventChargeSuccess();
-                    break;
-                
-                case EVENT_TYPE_CHARGE_FAIL:
-                    # code... 
-                    // $this->eventChargeFail();
-                    break;
-         
-                default:
-                    # code...
-                    break;
-            }
+        if($this->_validateCredentials($message->response->merchantId,$message->response->merchantKey))
+            throw new ZipMoney_Exception("Merchant Credentials donot match");
 
+        switch ($message->response->type) {
+            case EVENT_TYPE_AUTH_SUCCESS:
+                # code...
+                 $this->_eventAuthSuccess($message->response);
+                break;
+            
+            case EVENT_TYPE_AUTH_FAIL:
+                # code... 
+                 $this->_eventAuthFail($message->response);
+                break;
+            
+            case EVENT_TYPE_AUTH_REVIEW:
+                # code...
+                 $this->_eventAuthReview($message->response);
+                break;
+            
+            case EVENT_TYPE_CANCEL_SUCCESS:
+                # code...
+                 $this->_eventCancelSuccess($message->response);
+                break;
+            
+            case EVENT_TYPE_CANCEL_FAIL:
+                # code...
+                 $this->_eventCancelFail($message->response);
+                break;
+            
+            case EVENT_TYPE_CAPTURE_SUCCESS:
+                # code...
+                $this->_eventCaptureSuccess($message->response);
+                break;
+            
+            case EVENT_TYPE_CAPTURE_FAIL:
+                # code...
+                 $this->_eventCaptureFail($message->response);
+                break;
+            
+            case EVENT_TYPE_REFUND_SUCCESS:
+                # code...
+                 $this->_eventRefundSuccess($message->response);
+                break;
+            
+            case EVENT_TYPE_REFUND_FAIL:
+                # code...
+                 $this->_eventRefundFail($message->response);
+                break;
+            
+            case EVENT_TYPE_ORDER_CANCELLED:
+                # code...
+                 $this->_eventOrderCancel($message->response);
+                break;
+            
+            case EVENT_TYPE_CHARGE_SUCCESS:
+                # code...
+                 $this->_eventChargeSuccess($message->response);
+                break;
+            
+            case EVENT_TYPE_CHARGE_FAIL:
+                # code... 
+                 $this->_eventChargeFail($message->response);
+                break;
+     
+            default:
+                # code...
+                break;
         }
 
     }
 
+    /*
+     * Process Authorisation Success
+     *
+     * @param  $response
+     */
+    protected function _eventAuthSuccess($response){}  
 
+    /*
+     * Process Authorisation Failure
+     *
+     * @param  $response
+     */
+    protected function _eventAuthFail($response){}
 
+    /*
+     * Process Authorisation Review 
+     *
+     * @param  $response
+     */
+    protected function _eventAuthReview($response){}
+    
+    /*
+     * Process Cancel Success 
+     *
+     * @param  $response
+     */
+    protected function _eventCancelSuccess($response){}
+
+    /*
+     * Process Cancel Fail 
+     *
+     * @param  $response
+     */
+    protected function _eventCancelFail($response){}
+
+    /*
+     * Process Capture Success 
+     *
+     * @param  $response
+     */
+    protected function _eventCaptureSuccess($response){}
+
+    /*
+     * Process Capture Failure 
+     *
+     * @param  $response
+     */
+    protected function _eventCaptureFail($response){}
+
+    /*
+     * Process Refund Success 
+     *
+     * @param  $response
+     */
+    protected function _eventRefundSuccess($response){}
+
+    /*
+     * Process Refund Fail 
+     *
+     * @param  $response
+     */
+    protected function _eventRefundFail($response){}
+
+    /*
+     * Process Order Cancel
+     *
+     * @param  $response
+     */
+    protected function _eventOrderCancel($response){}
+
+    /*
+     * Process Charge Success 
+     *
+     * @param  $response
+     */
+    protected function _eventChargeSuccess($response){}
+
+    /*
+     * Process Charge Fail 
+     *
+     * @param  $response
+     */
+    protected function _eventChargeFail($response){}
+
+    /*
+     * Subscribe url on the endpoint
+     *
+     * @param  $subscribeUrl
+     */
     private function _subscribe($subscribeUrl)
     {
-
         if(!$subscribeUrl)
             throw new ZipMoney_Exception("SubscribeURL cannot be empty");
 

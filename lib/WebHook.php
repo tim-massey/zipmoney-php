@@ -96,6 +96,8 @@ abstract class ZipMoney_WebHook
         if ($params->Type == 'SubscriptionConfirmation') {
             
             $this->_subscribe($params->SubscribeURL);
+           
+            die();
 
         } else if ($params->Type == 'Notification') {
             
@@ -120,66 +122,66 @@ abstract class ZipMoney_WebHook
         if (!$message->response)
             throw new ZipMoney_Exception("Notification response cannot be empty");
 
-        if($this->_validateCredentials($message->response->merchantId,$message->response->merchantKey))
+        if(!$this->_validateCredentials($message->response->merchant_id,$message->response->merchant_key))
             throw new ZipMoney_Exception("Merchant Credentials donot match");
 
-        switch ($message->response->type) {
-            case EVENT_TYPE_AUTH_SUCCESS:
+        switch ($message->type) {
+            case self::EVENT_TYPE_AUTH_SUCCESS:
                 # code...
                  $this->_eventAuthSuccess($message->response);
                 break;
             
-            case EVENT_TYPE_AUTH_FAIL:
+            case self::EVENT_TYPE_AUTH_FAIL:
                 # code... 
                  $this->_eventAuthFail($message->response);
                 break;
             
-            case EVENT_TYPE_AUTH_REVIEW:
+            case self::EVENT_TYPE_AUTH_REVIEW:
                 # code...
                  $this->_eventAuthReview($message->response);
                 break;
             
-            case EVENT_TYPE_CANCEL_SUCCESS:
+            case self::EVENT_TYPE_CANCEL_SUCCESS:
                 # code...
                  $this->_eventCancelSuccess($message->response);
                 break;
             
-            case EVENT_TYPE_CANCEL_FAIL:
+            case self::EVENT_TYPE_CANCEL_FAIL:
                 # code...
                  $this->_eventCancelFail($message->response);
                 break;
             
-            case EVENT_TYPE_CAPTURE_SUCCESS:
+            case self::EVENT_TYPE_CAPTURE_SUCCESS:
                 # code...
                 $this->_eventCaptureSuccess($message->response);
                 break;
             
-            case EVENT_TYPE_CAPTURE_FAIL:
+            case self::EVENT_TYPE_CAPTURE_FAIL:
                 # code...
                  $this->_eventCaptureFail($message->response);
                 break;
             
-            case EVENT_TYPE_REFUND_SUCCESS:
+            case self::EVENT_TYPE_REFUND_SUCCESS:
                 # code...
                  $this->_eventRefundSuccess($message->response);
                 break;
             
-            case EVENT_TYPE_REFUND_FAIL:
+            case self::EVENT_TYPE_REFUND_FAIL:
                 # code...
                  $this->_eventRefundFail($message->response);
                 break;
             
-            case EVENT_TYPE_ORDER_CANCELLED:
+            case self::EVENT_TYPE_ORDER_CANCELLED:
                 # code...
                  $this->_eventOrderCancel($message->response);
                 break;
             
-            case EVENT_TYPE_CHARGE_SUCCESS:
+            case self::EVENT_TYPE_CHARGE_SUCCESS:
                 # code...
                  $this->_eventChargeSuccess($message->response);
                 break;
             
-            case EVENT_TYPE_CHARGE_FAIL:
+            case self::EVENT_TYPE_CHARGE_FAIL:
                 # code... 
                  $this->_eventChargeFail($message->response);
                 break;
@@ -286,7 +288,7 @@ abstract class ZipMoney_WebHook
             throw new ZipMoney_Exception("SubscribeURL cannot be empty");
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $subscribeUrl;
+        curl_setopt($curl, CURLOPT_URL, $subscribeUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($curl);
         curl_close($curl);

@@ -187,11 +187,11 @@ class ZipMoney_Api
      * @return ZipMoney_Response
      * @throws ZipMoney_Exception_Http
      */
-    public function configure()
+    public function configure($configureArray)
     {       
         $method = $this->_apiConfig->getPath("merchant_configure");
    
-    return $this->_request($method,array());
+    return $this->_request($method,$configureArray);
     }
 
     /**

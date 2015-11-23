@@ -78,4 +78,9 @@ class ZipMoney_Response
         return $this->_statusCode;
     }
 
+    public function isSuccess()
+    {
+        return $this->getStatusCode() == 200 || $this->getStatusCode() == 201 ?  true : false;
+    }
+
 }

@@ -100,6 +100,17 @@ abstract class ZipMoney_ApiExpress
 
     }
 
+
+    protected function sendResponse($params)
+    {
+        header('Content-Type: application/json');
+
+        if(!isset($params) ||  empty($params))
+            throw new  ZipMoney_Exception("Error Sending Response. No parameter provided", 1);
+            
+    die(json_encode($params));
+    }
+
     /*
      * Process get shipping methods call from the api.
      *

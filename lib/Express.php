@@ -8,14 +8,14 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-class ZipMoney_ApiExpress
+abstract class ZipMoney_ApiExpress
 {
-    const ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS     = 'get_shipping_methods';
-    const ACTION_RESPONSE_TYPE_GET_QUOTE_DETAILS        = 'get_quote_details';
-    const ACTION_RESPONSE_TYPE_CONFIRM_SHIPPING_METHOD  = 'confirm_shipping_method';
-    const ACTION_RESPONSE_TYPE_CONFIRM_ORDER            = 'confirm_order';
-    const ACTION_RESPONSE_TYPE_FINALISE_ORDER           = 'finalise_order';
-    const ACTION_RESPONSE_TYPE_CANCEL_QUOTE             = 'cancel_quote';
+    const ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS     = 'shippingmethods';
+    const ACTION_RESPONSE_TYPE_GET_QUOTE_DETAILS        = 'quotedetails';
+    const ACTION_RESPONSE_TYPE_CONFIRM_SHIPPING_METHOD  = 'confirmshippingmethod';
+    const ACTION_RESPONSE_TYPE_CONFIRM_ORDER            = 'confirmorder';
+    const ACTION_RESPONSE_TYPE_FINALISE_ORDER           = 'finaliseorder';
+    const ACTION_RESPONSE_TYPE_CANCEL_QUOTE             = 'cancelquote';
     
     private $_merchantId  = null;
 

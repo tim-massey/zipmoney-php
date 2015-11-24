@@ -50,6 +50,7 @@ abstract class ZipMoney_ApiExpress
     public function listen($action_type)
     {
         $data = file_get_contents("php://input");
+      
 
         if (!$data)
             throw new ZipMoney_Exception("Notification parameters cannot be empty");        
@@ -71,7 +72,7 @@ abstract class ZipMoney_ApiExpress
         
         if(!$this->_validateCredentials($params->merchant_id,$params->merchant_key))
             throw new ZipMoney_Exception("Merchant Credentials donot match");
-        print_r($params);
+
         switch ($action_type) {
             case self::ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS:
 

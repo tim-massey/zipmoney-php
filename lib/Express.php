@@ -42,87 +42,96 @@ class ZipMoney_ApiExpress
         
     }
 
-
-    private function _validateToken($merchantId,$merchantKey)
+    /*
+     * Listen for WebHook Request
+     *
+     * @param  $params
+     */
+    public function listen($action_type)
     {
+        $data = file_get_contents("php://input");
 
-        if($merchantId == $this->_merchantId && $merchantKey == $this->_merchantKey){
-            return true;
-        }
-        else{
-            return false;
-        }
+        if (!$data)
+            throw new ZipMoney_Exception("Notification parameters cannot be empty");        
+
+            $params = json_decode($data);
+
+            $this->_processRequest($params,$action_type);
+    }
+
+
+     /*
+     * Process WebHook Request
+     *
+     * @param  $params
+     * @param  $action_type
+     */
+    protected function _processRequest($params,$action_type)
+    {
         
+        if(!$this->_validateCredentials($params->merchant_id,$params->merchant_key))
+            throw new ZipMoney_Exception("Merchant Credentials donot match");
+        print_r($params);
+        switch ($action_type) {
+            case self::ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS:
+
+                 $this->_actionGetShippingMethods($params);
+                break;
+           
+            case self::ACTION_RESPONSE_TYPE_GET_QUOTE_DETAILS:
+                
+                 $this->_actionGetQuoteDetails($params);
+                break;
+           
+            case self::ACTION_RESPONSE_TYPE_CONFIRM_SHIPPING_METHOD:
+
+                 $this->_actionConfirmShippingMethods($params);
+                break;
+               
+            case self::ACTION_RESPONSE_TYPE_CONFIRM_ORDER:
+                 $this->_actionConfirmOrder($params);
+                break;
+           
+            default:
+
+                break;
+        }
+
     }
 
     /*
-     * Call checkout method on the endpoint
+     * Process get shipping methods call from the api.
      *
-     * @param  $orderArray
-     * @return ZipMoney_Response
-     * @throws ZipMoney_Exception_Http
+     * @param  $params
      */
-    public function processShippingMethods($orderArray)
-    {
-       $method = $this->_apiConfig->getPath(__FUNCTION__);
-       
-       if(!is_array($orderArray))
-            throw new ZipMoney_Exception("Argument should be an array", 1);
-
-    return $this->_request($method, $orderArray);
-    }
+    protected function _actionGetShippingMethods($params){}
+   
+    /*
+     * Process confirm shipping method call from the api.
+     *
+     * @param  $params
+     */
+    protected function _actionConfirmShippingMethods($params){}
 
     /**
-     * Call cancel method on the endpoint
+     * Process confirm order  call from the api.
      *
-     * @param  $cancelArray
-     * @return ZipMoney_Response
-     * @throws ZipMoney_Exception_Http
+     * @param  $params
      */
-    public function confirmOrder($cancelArray)
-    {       
-       $method = $this->_apiConfig->getPath("order_cancel");
-        
-        if(!is_array($cancelArray))
-            throw new ZipMoney_Exception("Argument should be an array", 1);
-
-    return $this->_request($method,$cancelArray);
-    }
+    protected function _actionConfirmOrder($params){}
 
     /**
-     * Call quote method on the endpoint
+     * Process finalise orderd call from the api.
      *
-     * @param  $quoteArray
-     * @return ZipMoney_Response
-     * @throws ZipMoney_Exception_Http
+     * @param  $params
      */
-    public function finaliseOrder($quoteArray)
-    {        
-        $method = $this->_apiConfig->getPath("quote_quote");
-
-        if(!is_array($quoteArray))
-            throw new ZipMoney_Exception("Argument should be an array", 1);
-
-    return $this->_request($method,$quoteArray);
-    }
+    protected function _actionFinaliseOrder($params){}
 
     /**
-     * Call refund method on the endpoint
+     * Process get quote details  call from the api.
      *
-     * @param  $refundArray
-     * @return ZipMoney_Response
-     * @throws ZipMoney_Exception_Http
+     * @param  $params
      */
-    public function getQuoteDetails($refundArray)
-    {
-        $method = $this->_apiConfig->getPath(__FUNCTION__);
-        
-        if(!is_array($refundArray))
-            throw new ZipMoney_Exception("Argument should be an array", 1);
-
-    return $this->_request($method,$refundArray);
-    }
-
-    
+    protected function _actionGetQuoteDetails($params){}
     
 }

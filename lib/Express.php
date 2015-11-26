@@ -18,7 +18,7 @@ abstract class ZipMoney_ApiExpress
     const ACTION_RESPONSE_TYPE_CANCEL_QUOTE             = 'cancelquote';
     
 
-    
+
     private $_merchantId  = null;
 
     private $_merchantKey = null;
@@ -102,6 +102,24 @@ abstract class ZipMoney_ApiExpress
 
     }
 
+    /**
+     * 
+     * Add ZipMoney API keys to the response, if not already
+     *
+     */
+    protected  function _addApiKeys(&$params)
+    {
+
+        if (!isset($params['merchant_id'])) {
+            $params['merchant_id'] = $this->_merchantId;
+        }
+
+        if (!isset($params['merchant_key'])) { 
+            $params['merchant_key'] = $this->_merchantKey;
+        }
+
+    }
+
 
     protected function sendResponse($params)
     {
@@ -109,6 +127,9 @@ abstract class ZipMoney_ApiExpress
         if(!isset($params) ||  empty($params))
             throw new  ZipMoney_Exception("Error Sending Response. No parameter provided", 1);
         
+        //Add api keys to response
+        $this->_addApiKeys($params);
+
         header('Content-Type: application/json');
         die(json_encode($params));
     }

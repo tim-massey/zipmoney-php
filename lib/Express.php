@@ -17,6 +17,8 @@ abstract class ZipMoney_ApiExpress
     const ACTION_RESPONSE_TYPE_FINALISE_ORDER           = 'finaliseorder';
     const ACTION_RESPONSE_TYPE_CANCEL_QUOTE             = 'cancelquote';
     
+
+    
     private $_merchantId  = null;
 
     private $_merchantKey = null;
@@ -103,12 +105,12 @@ abstract class ZipMoney_ApiExpress
 
     protected function sendResponse($params)
     {
-        header('Content-Type: application/json');
 
         if(!isset($params) ||  empty($params))
             throw new  ZipMoney_Exception("Error Sending Response. No parameter provided", 1);
-            
-    die(json_encode($params));
+        
+        header('Content-Type: application/json');
+        die(json_encode($params));
     }
 
     /*

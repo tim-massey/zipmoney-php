@@ -65,6 +65,40 @@ class ZipMoney_Api
     }
 
     /**
+     * Call ZipMoney API endpoint
+     *
+     * @param $method
+     * @param $params
+     * @param int $timeout
+     * @return ZipMoney_Response
+     * @throws ZipMoney_Exception_Http
+     */
+    public function request($method, $params = null, $timeout = 60)
+    {
+        $config = array('timeout' => $timeout);
+
+        if(!isset($method) || empty($method))
+            throw new ZipMoney_Exception("Api method not provided", 1);
+        
+        $this->_params = $params;
+   
+        $this->_addApiKeys();
+
+        // if params is provided, consider it as a POST 
+        if(is_array($params)){      
+
+           $response = $this->_client->post($method,$this->_params);
+        }     
+        else {
+
+           $response = $this->_client->get($method,$this->_params);
+        }
+
+       return new ZipMoney_Response($response);
+    }
+
+
+    /**
      * Call checkout method on the endpoint
      *
      * @param  $orderArray
@@ -78,7 +112,7 @@ class ZipMoney_Api
        if(!is_array($orderArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method, $orderArray);
+    return $this->request($method, $orderArray);
     }
 
     /**
@@ -95,7 +129,7 @@ class ZipMoney_Api
         if(!is_array($cancelArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method,$cancelArray);
+    return $this->request($method,$cancelArray);
     }
 
     /**
@@ -112,7 +146,7 @@ class ZipMoney_Api
         if(!is_array($quoteArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method,$quoteArray);
+    return $this->request($method,$quoteArray);
     }
 
     /**
@@ -129,7 +163,7 @@ class ZipMoney_Api
         if(!is_array($refundArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method,$refundArray);
+    return $this->request($method,$refundArray);
     }
 
     
@@ -147,7 +181,7 @@ class ZipMoney_Api
         if(!is_array($queryArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method,$queryArray);
+    return $this->request($method,$queryArray);
     } 
 
     /**
@@ -164,21 +198,24 @@ class ZipMoney_Api
         if(!is_array($captureArray))
             throw new ZipMoney_Exception("Argument should be an array", 1);
 
-    return $this->_request($method,$captureArray);
+    return $this->request($method,$captureArray);
     }
 
     /**
      * Call settings method on the endpoint
      *
-     * @param  $queryArray
+     * @param  $settingsArray
      * @return ZipMoney_Response
      * @throws ZipMoney_Exception_Http
      */
-    public function settings()
-    {       
+    public function settings($settingsArray)
+    {        
+        if(!is_array($settingsArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+
         $method = $this->_apiConfig->getPath("merchant_settings");
    
-    return $this->_request($method,array());
+    return $this->request($method,$settingsArray);
     }
 
     /**
@@ -188,10 +225,13 @@ class ZipMoney_Api
      * @throws ZipMoney_Exception_Http
      */
     public function configure($configureArray)
-    {       
+    {    
+        if(!is_array($configureArray))
+            throw new ZipMoney_Exception("Argument should be an array", 1);
+   
         $method = $this->_apiConfig->getPath("merchant_configure");
    
-    return $this->_request($method,$configureArray);
+    return $this->request($method,$configureArray);
     }
 
     /**
@@ -205,7 +245,7 @@ class ZipMoney_Api
     {
         $method = $this->_apiConfig->getPath(__FUNCTION__);
       
-    return  $this->_request($method);
+    return  $this->request($method);
     }
 
 
@@ -269,38 +309,6 @@ class ZipMoney_Api
 
     }
 
-    /**
-     * Call ZipMoney API endpoint
-     *
-     * @param $method
-     * @param $params
-     * @param int $timeout
-     * @return ZipMoney_Response
-     * @throws ZipMoney_Exception_Http
-     */
-    protected function _request($method, $params = null, $timeout = 60)
-    {
-        $config = array('timeout' => $timeout);
-
-        if(!isset($method) || empty($method))
-            throw new ZipMoney_Exception("Api method not provided", 1);
-        
-        $this->_params = $params;
    
-        $this->_addApiKeys();
-
-        // if params is provided, consider it as a POST 
-        if(is_array($params)){      
-
-           $response = $this->_client->post($method,$this->_params);
-        }     
-        else {
-
-           $response = $this->_client->get($method,$this->_params);
-        }
-
-       return new ZipMoney_Response($response);
-    }
-
     
 }

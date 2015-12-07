@@ -8,7 +8,7 @@
  * @link      http://www.zipmoney.com.au/
  */
 
-abstract class ZipMoney_ApiExpress
+abstract class ZipMoney_Abstract_Express
 {
     const ACTION_RESPONSE_TYPE_GET_SHIPPING_METHODS     = 'shippingmethods';
     const ACTION_RESPONSE_TYPE_GET_QUOTE_DETAILS        = 'quotedetails';

@@ -13,9 +13,9 @@ set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__
 require_once 'lib/Http.php';
 require_once 'lib/Exception.php';
 require_once 'lib/Exception/Http.php';
-require_once 'lib/Express.php';
+require_once 'lib/Abstract/Express.php';
+require_once 'lib/Abstract/WebHook.php';
 require_once 'lib/Response.php';
-require_once 'lib/WebHook.php';
 require_once 'lib/ApiConfig.php';
 require_once 'lib/Api.php';
 

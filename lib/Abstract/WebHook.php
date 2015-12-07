@@ -25,7 +25,7 @@
     charge_failed
 */
 
-abstract class ZipMoney_WebHook
+abstract class ZipMoney_Abstract_WebHook
 {
     private $_merchantId = null;
 

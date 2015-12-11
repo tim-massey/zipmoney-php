@@ -48,6 +48,8 @@ abstract class ZipMoney_Abstract_WebHook
 
     const EVENT_TYPE_CHARGE_SUCCESS = "charge_succeeded";
     const EVENT_TYPE_CHARGE_FAIL    = "charge_failed";
+
+    const EVENT_TYPE_CONFIG_UPDATE  = "configuration_updated";
     
 
     public function __construct($merchantId,$merchantKey)
@@ -93,17 +95,20 @@ abstract class ZipMoney_Abstract_WebHook
 
         $params = json_decode($data);
 
-        if ($params->Type == 'SubscriptionConfirmation') {
+        if(!$params)
+            throw new ZipMoney_Exception("Invalid Parameters");        
+
+        if (isset($params->Type) && $params->Type == 'SubscriptionConfirmation') {
             
             $this->_subscribe($params->SubscribeURL);
            
             die();
 
-        } else if ($params->Type == 'Notification') {
+        } else if (isset($params->Type) &&  $params->Type == 'Notification') {
             
             $this->_processRequest($params);
-
         }
+
     }
 
     /*
@@ -118,6 +123,7 @@ abstract class ZipMoney_Abstract_WebHook
             throw new ZipMoney_Exception("Notification message cannot be empty");
 
         $message  = json_decode($params->Message);
+        
 
         if (!$message->response)
             throw new ZipMoney_Exception("Notification response cannot be empty");
@@ -184,6 +190,11 @@ abstract class ZipMoney_Abstract_WebHook
             case self::EVENT_TYPE_CHARGE_FAIL:
                 # code... 
                  $this->_eventChargeFail($message->response);
+                break;
+            
+            case self::EVENT_TYPE_CONFIG_UPDATE:
+                # code... 
+                 $this->_eventConfigUpdate($message->response);
                 break;
      
             default:
@@ -276,6 +287,13 @@ abstract class ZipMoney_Abstract_WebHook
      * @param  $response
      */
     protected function _eventChargeFail($response){}
+    
+    /*
+     * Process Charge Fail 
+     *
+     * @param  $response
+     */
+    protected function _eventConfigUpdate($response){}
 
     /*
      * Subscribe url on the endpoint

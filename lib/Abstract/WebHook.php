@@ -31,9 +31,10 @@ abstract class ZipMoney_Abstract_WebHook
 
     private $_merchantKey = null;
 
-    const EVENT_TYPE_AUTH_SUCCESS = "authorise_succeeded";
-    const EVENT_TYPE_AUTH_FAIL    = "authorise_failed";
-    const EVENT_TYPE_AUTH_REVIEW  = "authorise_under_review";
+    const EVENT_TYPE_AUTH_SUCCESS   = "authorise_succeeded";
+    const EVENT_TYPE_AUTH_FAIL      = "authorise_failed";
+    const EVENT_TYPE_AUTH_REVIEW    = "authorise_under_review";
+    const EVENT_TYPE_AUTH_DECLINED  = "authorise_declined";
 
     const EVENT_TYPE_CANCEL_SUCCESS = "cancel_succeeded";
     const EVENT_TYPE_CANCEL_FAIL    = "cancel_failed";
@@ -146,6 +147,11 @@ abstract class ZipMoney_Abstract_WebHook
                 # code...
                  $this->_eventAuthReview($message->response);
                 break;
+
+            case self::EVENT_TYPE_AUTH_DECLINED:
+                # code...
+                 $this->_eventAuthDeclined($message->response);
+                break;
             
             case self::EVENT_TYPE_CANCEL_SUCCESS:
                 # code...
@@ -224,6 +230,13 @@ abstract class ZipMoney_Abstract_WebHook
      * @param  $response
      */
     protected function _eventAuthReview($response){}
+    
+    /*
+     * Process Authorisation Review 
+     *
+     * @param  $response
+     */
+    protected function _eventAuthDeclined($response){}
     
     /*
      * Process Cancel Success 

@@ -1,0 +1,10 @@
+{
+    "name": "zipMoney/zipMoney-php-sdk",
+    "authors": [
+        {
+            "name": "ZipMoney",
+            "email": "sagar.bhandari@zipmoney.com.au"
+        }
+    ],
+    "minimum-stability": "dev"
+}

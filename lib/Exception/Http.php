@@ -8,6 +8,4 @@
  * @link      http://www.zipmoney.com.au/
  */
 class ZipMoney_Exception_Http extends Exception
-{
-
-}
+{}

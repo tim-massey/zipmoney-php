@@ -1,5 +1,11 @@
 <?php
-require_once "ZipMoneyTestMain.php";
+namespace zipMoney\Tests;
+
+use zipMoney\Http;
+use zipMoney\Response;
+
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
 /**
  * @category  ZipMoney
  * @package   ZipMoney_SDK
@@ -8,33 +14,33 @@ require_once "ZipMoneyTestMain.php";
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
  */
-class ZipMoney_ResponseTest extends ZipMoneyTestMain
+class ResponseTest extends TestZipMoney
 {
 
     public function testResponseCode()
     {
 
-        $http     = new ZipMoney_Http($this->zApiConfig->getApiBaseUrl());
+        $http     = new Http($this->zApiConfig->getApiBaseUrl());
         $http->setHttpHeader($this->_apiHeaders);
 
         $response = $http->post($this->zApiConfig->getPath("merchant_settings"),$this->params);
-        $rObj     = new ZipMoney_Response($response);
+        $rObj     = new Response($response);
 
         $this->assertEquals(200,$rObj->getStatusCode(),"Not a succcess");
 
         $response = $http->post($this->zApiConfig->getPath("merchant_settings"));
-        $rObj     = new ZipMoney_Response($response);
+        $rObj     = new Response($response);
 
         $this->assertEquals(500,$rObj->getStatusCode());
     }
     
     public function testToArray()
     {
-        $http     = new ZipMoney_Http($this->zApiConfig->getApiBaseUrl());
+        $http     = new Http($this->zApiConfig->getApiBaseUrl());
         $http->setHttpHeader($this->_apiHeaders);
 
         $response = $http->post($this->zApiConfig->getPath("merchant_settings"),$this->params);
-        $rObj     = new ZipMoney_Response($response);
+        $rObj     = new Response($response);
         $this->assertTrue(is_array($rObj->toArray()));
 
     }
@@ -43,11 +49,11 @@ class ZipMoney_ResponseTest extends ZipMoneyTestMain
     public function testToObject()
     {
 
-        $http     = new ZipMoney_Http($this->zApiConfig->getApiBaseUrl());
+        $http     = new Http($this->zApiConfig->getApiBaseUrl());
         $http->setHttpHeader($this->_apiHeaders);
 
         $response = $http->post($this->zApiConfig->getPath("merchant_settings"),$this->params);
-        $rObj     = new ZipMoney_Response($response);
+        $rObj     = new Response($response);
         $this->assertTrue(is_object($rObj->toObject()));
 
     }
@@ -55,11 +61,11 @@ class ZipMoney_ResponseTest extends ZipMoneyTestMain
     // public function testGetRedirectUrl()
     // {
 
-    //     $http     = new ZipMoney_Http($this->zApiConfig->getApiBaseUrl());
+    //     $http     = new Http($this->zApiConfig->getApiBaseUrl());
     //     $http->setHttpHeader($this->_apiHeaders);
 
     //     $response = $http->post($this->zApiConfig->getPath("merchant_settings"),$this->params);
-    //     $rObj     = new ZipMoney_Response($response);
+    //     $rObj     = new Response($response);
     //     $this->assertTrue(is_object($rObj->toObject()));
 
     // }

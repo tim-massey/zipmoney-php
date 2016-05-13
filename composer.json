@@ -2,9 +2,15 @@
     "name": "zipMoney/zipMoney-php-sdk",
     "authors": [
         {
-            "name": "ZipMoney",
+            "name": "zipMoney",
             "email": "sagar.bhandari@zipmoney.com.au"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "zipMoney\\":"src/zipMoney",
+            "zipMoney\\Tests\\": "tests/"
+        }
+    }
 }

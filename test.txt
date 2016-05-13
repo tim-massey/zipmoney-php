@@ -1,0 +1,13 @@
+stdClass Object
+(
+    [Type] => Notification
+    [MessageId] => 6c2a13e1-c2e4-56f7-92ca-5f45d84131e9
+    [TopicArn] => ...
+    [Subject] => authorise_succeeded
+    [Message] => {"type":"authorise_succeeded","response":{"merchant_id":"0","merchant_key":"...","txn_id":"4794","order_id":"100001127","create_time":"2014-09-30T12:41:47.1909547+10:00","status":"Authorised","error_message":null,"version":null,"metadata":null}}
+    [Timestamp] => 2014-09-30T02:41:41.072Z
+    [SignatureVersion] => 1
+    [Signature] => ...
+    [SigningCertURL] => https://sns.ap-southeast-2.amazonaws.com/SimpleNotificationService-d6d679a1d18e95c2f9ffcf11f4f9e198.pem
+    [UnsubscribeURL] => ...
+)

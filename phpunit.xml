@@ -1,7 +1,7 @@
 <phpunit>
   <testsuites>
     <testsuite name="zipmoney">      
-      <directory>./</directory>    
+      <directory>./tests</directory>    
     </testsuite>
   </testsuites>
 </phpunit>

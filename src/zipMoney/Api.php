@@ -68,8 +68,11 @@ class Api
             throw new \zipMoney\Exception("Api resource not available", 1);
 
         $payload = Util::objectToArray($payload);
-        $payload = $this->append_api_credentials($payload);
 
+        $payload = Util::prepareRequest($payload);
+
+        $payload = $this->append_api_credentials($payload);
+        
         if($method == "POST" ){      
           $response = $resource->post($payload);
         }     

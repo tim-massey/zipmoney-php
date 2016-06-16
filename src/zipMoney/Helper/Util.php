@@ -5,17 +5,30 @@ class Util
 {
    
     public static function objectToArray($d)
-    {
+    {        
+        return json_decode(json_encode($d), true);;
+    }
 
-        if (is_object($d)) {
-            $d = get_object_vars($d);
+
+    public static function prepareRequest($requestArray)
+    {   
+        $newArray = array();
+        
+        foreach ($requestArray as $key => $value) {
+
+            if(is_array($value) && count($value)){
+                
+                // Check if return value is not empty
+                if($retVal = self::prepareRequest($value))
+                   $newArray[$key] = $retVal;
+
+            } else {
+                if(!is_null($value)){
+                 $newArray[$key] = $value;
+                }
+            }
         }
 
-        if (is_array($d)) {
-            return array_map(array('self',__FUNCTION__), $d);
-        }
-        else {
-            return $d;
-        }
+        return $newArray;
     }
 }

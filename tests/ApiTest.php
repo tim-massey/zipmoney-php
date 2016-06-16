@@ -44,22 +44,83 @@ class ApiTest extends TestZipMoney
       $checkout->request->refer_url   = "https://your-domain/zipmoney/express/refer/";
       $checkout->request->decline_url = "https://your-domain/zipmoney/express/decline/";
 
-      $checkout->request->order            = Request::Order(1,2,3,4);
-      $checkout->request->order->detail[]  = Request::OrderDetail(10758,"GoPro Hero3+ Silver Edition - Silver",null, 1, 222,339.5,null);
-      $checkout->request->order->detail[]  = Request::OrderDetail(10758,"GoPro Hero3+ Silver Edition - Silver11",null, 1, 333, 539.5,null);
 
+      $order = new Request\Order;
+        $order->id = 1;
+        $order->tax = 110;
+        $order->shipping_tax = 0;
+        $order->shipping_value = 10;
+        $order->total = 120;
 
-      $checkout->request->billing_address  = Request::Address("firstname","lastname","address line 1","address line 1","Australia","postcode","Sydney","NSW");
-      $checkout->request->shipping_address = Request::Address("firstname","lastname","address line 1","address line 1","Australia","postcode","Sydney","NSW");
-      $checkout->request->consumer         = Request::Consumer("firstname","lastname","1234567890","your-email@email.com",1, "0001-01-01T00:00:00","title");
+      $order_item = new Request\OrderItem;
+        $order_item->id = 10758;
+        $order_item->sku  = "item-10758"; 
+        $order_item->name = "GoPro Hero3+ Silver Edition - Silver";
+        $order_item->price =  110;
+        $order_item->quantity = 1; 
+      
+      $order->detail[] = $order_item;
+        
+      $order_item = new Request\OrderItem;
+        $order_item->id = 10759;
+        $order_item->sku  = "item-10759"; 
+        $order_item->name = "GoPro Hero3+ Silver Edition - Silver1";
+        $order_item->price =  110;
+        $order_item->quantity = 1;
+      
+      $order->detail[] = $order_item;
+
+      $checkout->request->order = $order;
+
+      $billingAddress  = new Request\Address;
+
+        $billingAddress->first_name = "firstname";
+        $billingAddress->last_name = "lastname";
+        $billingAddress->line1 = "line1";
+        $billingAddress->line2 = "line2";
+        $billingAddress->country = "Australia";
+        $billingAddress->zip = "postcode";
+        $billingAddress->city = "Sydney";
+        $billingAddress->state = "NSW";
+      
+      $checkout->request->billing_address  = $billingAddress;
+        
+      $shippingAddress = new Request\Address;
+
+        $shippingAddress->first_name = "firstname";
+        $shippingAddress->last_name = "lastname";
+        $shippingAddress->line1 = "line1";
+        $shippingAddress->line2 = "line2";
+        $shippingAddress->country = "Australia";
+        $shippingAddress->zip = "postcode";
+        $shippingAddress->city = "Sydney";
+        $shippingAddress->state = "NSW";
+      
+      $checkout->request->shipping_address  = $shippingAddress;
+
+      $consumer  = new Request\Consumer;
+
+        $consumer->first_name = "firstname";
+        $consumer->last_name = "lastname";
+        $consumer->phone = 0400000000;
+        $consumer->email = "test@test.com.au";
+        $consumer->gender = "male";
+        $consumer->dob = "2016-06-16T15:31:23.8051383+10:00";
+        $consumer->title = "mr";
+
+      $checkout->request->consumer  = $consumer;
+      
+      $checkout->request->version = new Request\Version;
+      
+      $checkout->request->version->platform = "php";
+
 
       try{
 
         $response      = $checkout->process();
         $responseArray = $response->toArray();
-
-        $this->txn_id  = $responseArray['txn_id'];
-          //  print_r($responseArray);
+        // print_r($responseArray);
+        $txn_id  = $responseArray['txn_id'];
 
         $this->assertTrue($response->isSuccess());                  // Check if the response is success
         $this->assertEquals(201,$response->getStatusCode());        // Check if the response code is 201
@@ -89,18 +150,82 @@ class ApiTest extends TestZipMoney
       $quote->request->refer_url   = "https://your-domain/zipmoney/express/refer/";
       $quote->request->decline_url = "https://your-domain/zipmoney/express/decline/";
 
-      $quote->request->order            = Request::Order(1,2,3,4);
-      $quote->request->order->detail[]  = Request::OrderDetail(10758,"GoPro Hero3+ Silver Edition - Silver",null, 1, 222,339.5,null);
-      $quote->request->order->detail[]  = Request::OrderDetail(10758,"GoPro Hero3+ Silver Edition - Silver11",null, 1, 333, 539.5,null);
+  
+      $order = new Request\Order;
+        $order->id = 1;
+        $order->tax = 110;
+        $order->shipping_tax = 0;
+        $order->shipping_value = 10;
+        $order->total = 120;
 
-      $quote->request->billing_address  = Request::Address("firstname","lastname","address line 1","address line 1","Australia","postcode","Sydney","NSW");
-      $quote->request->shipping_address = Request::Address("firstname","lastname","address line 1","address line 1","Australia","postcode","Sydney","NSW");
-      $quote->request->consumer         = Request::Consumer("firstname","lastname","1234567890","your-email@email.com",1, "0001-01-01T00:00:00","title");
+      $order_item = new Request\OrderItem;
+        $order_item->id = 10758;
+        $order_item->sku  = "item-10758"; 
+        $order_item->name = "GoPro Hero3+ Silver Edition - Silver";
+        $order_item->price =  110;
+        $order_item->quantity = 1; 
+      
+      $order->detail[] = $order_item;
+        
+      $order_item = new Request\OrderItem;
+        $order_item->id = 10759;
+        $order_item->sku  = "item-10759"; 
+        $order_item->name = "GoPro Hero3+ Silver Edition - Silver1";
+        $order_item->price =  110;
+        $order_item->quantity = 1;
+      
+      $order->detail[] = $order_item;
 
+      $quote->request->order = $order;
+
+      $billingAddress  = new Request\Address;
+
+        $billingAddress->first_name = "firstname";
+        $billingAddress->last_name = "lastname";
+        $billingAddress->line1 = "line1";
+        $billingAddress->line2 = "line2";
+        $billingAddress->country = "Australia";
+        $billingAddress->zip = "postcode";
+        $billingAddress->city = "Sydney";
+        $billingAddress->state = "NSW";
+      
+      $quote->request->billing_address  = $billingAddress;
+        
+      $shippingAddress = new Request\Address;
+
+        $shippingAddress->first_name = "firstname";
+        $shippingAddress->last_name = "lastname";
+        $shippingAddress->line1 = "line1";
+        $shippingAddress->line2 = "line2";
+        $shippingAddress->country = "Australia";
+        $shippingAddress->zip = "postcode";
+        $shippingAddress->city = "Sydney";
+        $shippingAddress->state = "NSW";
+      
+      $quote->request->shipping_address  = $shippingAddress;
+
+      $consumer  = new Request\Consumer;
+
+        $consumer->first_name = "firstname";
+        $consumer->last_name = "lastname";
+        $consumer->phone = 0400000000;
+        $consumer->email = "test@test.com.au";
+        $consumer->gender = "male";
+        $consumer->dob = "2016-06-16T15:31:23.8051383+10:00";
+        $consumer->title = "mr";
+
+      $quote->request->consumer  = $consumer;
+
+      $quote->request->version = new Request\Version;
+      
+      $quote->request->version->platform = "php";
 
       try{
         $response = $quote->process();
-        $responseArray = $response->toArray();
+
+        $responseArray = $response->toArray();        
+        // print_r($responseArray);
+
         $this->assertEquals(201,$response->getStatusCode());        // Check if the response code is 201
         $this->assertTrue(!empty($responseArray['redirect_url']));  // Check if redirect_url is set
         $this->assertTrue(!empty($responseArray['quote_id']));      // Check if quote_id is set
@@ -114,19 +239,27 @@ class ApiTest extends TestZipMoney
     public function testRefund()
     {
 
-      $quote = new Refund();
+      $refund = new Refund();
 
-      $quote->request->reason = "Test Reason";
-      $quote->request->txn_id = 111;
-      $quote->request->order_id = "91005501";
+      $refund->request->reason = "Test Reason";
+      $refund->request->txn_id = 111;
+      $refund->request->order_id = "91005501";
 
-      $quote->request->order   = Request::Order(1,2,3,4);
+      
+      $order = new Request\Order;
+        $order->id = 1;
+        $order->tax = 110;
+        $order->shipping_value = 10;
+        $order->total = 120;
+      
+      $refund->request->order = $order;
+        
 
       try{
-        $response = $quote->process();
+        $response = $refund->process();
         $responseArray = $response->toArray();
         
-        //print_r($responseArray);
+        // print_r($responseArray);
 
         $this->assertFalse($response->isSuccess());  // Check if redirect_url is set
 
@@ -139,19 +272,24 @@ class ApiTest extends TestZipMoney
     public function testCancel()
     {
 
-      $quote = new Cancel();
+      $cancel = new Cancel();
 
-      $quote->request->txn_id = 111;
-      $quote->request->order_id = "91005501";
+      $cancel->request->txn_id = 111;
+      $cancel->request->order_id = "91005501";
 
-      $quote->request->order   = Request::Order(1,2,3,4);
-
+      $order = new Request\Order;
+        $order->id = 1;
+        $order->tax = 110;
+        $order->shipping_value = 10;
+        $order->total = 120;
+      
+      $cancel->request->order = $order;
 
       try{
-        $response = $quote->process();
+        $response = $cancel->process();
         $responseArray = $response->toArray();
         
-       // print_r($responseArray);
+        // print_r($responseArray);
 
         $this->assertFalse($response->isSuccess());  // Check if redirect_url is set
 
@@ -164,18 +302,24 @@ class ApiTest extends TestZipMoney
 
     public function testCapture()
     {
+      $capture = new Capture();
+      
+      $capture->request->txn_id = 111;
+      $capture->request->order_id = "91005501";
 
-      $quote = new Capture();
+      $order = new Request\Order;
+        $order->id = 1;
+        $order->tax = 110;
+        $order->shipping_value = 10;
+        $order->total = 120;
+      
+      $capture->request->order = $order;
 
-      $quote->request->txn_id = 111;
-      $quote->request->order_id = "91005501";
-
-      $quote->request->order   = Request::Order(1,2,3,4);
 
       try{
-        $response = $quote->process();
+        $response = $capture->process();
         $responseArray = $response->toArray();
-        //print_r($responseArray);
+        // print_r($responseArray);
 
         $this->assertFalse($response->isSuccess());  // Check if redirect_url is set
 
@@ -189,15 +333,19 @@ class ApiTest extends TestZipMoney
     public function testQuery()
     {
 
-      $quote = new Query();
-      $quote->request->orders[] = Request::QueryOrder(694123);
+      $query = new Query();
+
+      $queryOrder = new  Request\QueryOrder;
+      $queryOrder->id = 1234;
+
+      $query->request->orders[] = $queryOrder;
 
       try{
 
-        $response      = $quote->process();
+        $response      = $query->process();
         $responseArray = $response->toArray();
 
-      //  print_r($responseArray);
+        // print_r($responseArray);
 
         $this->assertTrue($response->isSuccess());  // Check if redirect_url is set
 
@@ -217,6 +365,7 @@ class ApiTest extends TestZipMoney
 
         $response      = $settings->process();
         $responseArray = $response->toArray();
+        // print_r($responseArray);
 
         $this->assertTrue($response->isSuccess());  // Check if redirect_url is set
 

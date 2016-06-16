@@ -5,7 +5,6 @@ use zipMoney\Gateway;
 use zipMoney\Exception;
 use zipMoney\Request;
 use zipMoney\Configuration;
-use zipMoney\Helper\Klass;
 
 /**
  * @category  ZipMoney
@@ -20,12 +19,33 @@ class Checkout
 {
   public  $request;
 
-  private $_params = array("charge", "currency_code", "in_store", "txn_id", "token",  "order_id",  "cart_url" , "success_url" , "cancel_url", "refer_url" , "error_url", "decline_url",  "merchant_id", "merchant_key", "order", "consumer", "billing_address", "shipping_address", "version", "metadata");
+  private $_params = array(
+                           "charge", 
+                           "currency_code", 
+                           "in_store", 
+                           "txn_id", 
+                           "token",  
+                           "order_id",  
+                           "cart_url" , 
+                           "success_url" , 
+                           "cancel_url", 
+                           "refer_url" , 
+                           "error_url", 
+                           "decline_url",  
+                           "merchant_id", 
+                           "merchant_key", 
+                           "order" => array("type" => "\\zipMoney\\Request\\Order"), 
+                           "consumer" => array("type" => "\\zipMoney\\Request\\Consumer"), 
+                           "billing_address" => array("type" => "\\zipMoney\\Request\\Address"), 
+                           "shipping_address"=> array("type" => "\\zipMoney\\Request\\Address"), 
+                           "version" => array("type" => "\\zipMoney\\Request\\Version"), 
+                           "metadata" => array("type" => "\\zipMoney\\Request\\Metadata")
+                           );
 
   public function __construct()
   {
 
-    $this->request  =  Klass::factory($this->_params);
+    $this->request  =  Request::factory($this->_params);
   }
 
   public function process()

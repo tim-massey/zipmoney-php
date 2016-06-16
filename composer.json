@@ -1,5 +1,5 @@
 {
-    "name": "zipMoney/zipmoney-php",    
+    "name": "zipmoney/zipmoney-php",    
     "type": "library",    
     "description": "Client Library for zipMoney Payments",
     "keywords": ["zipMoney","zipPay","zipMoney PHP SDK","zipMoney Client Library"],   

@@ -20,14 +20,12 @@ class Checkout
 {
   public  $request;
 
-  private $_params = array("charge", "currency_code", "in_store", "txn_id", "token",  "order_id",  "cart_url" , "success_url" , "cancel_url", "refer_url" , "error_url", "decline_url",  "merchant_id", 
-                           "merchant_key", "order", "consumer", "billing_address", "shipping_address", "version", "metadata");
+  private $_params = array("charge", "currency_code", "in_store", "txn_id", "token",  "order_id",  "cart_url" , "success_url" , "cancel_url", "refer_url" , "error_url", "decline_url",  "merchant_id", "merchant_key", "order", "consumer", "billing_address", "shipping_address", "version", "metadata");
 
   public function __construct()
   {
 
     $this->request  =  Klass::factory($this->_params);
-
   }
 
   public function process()

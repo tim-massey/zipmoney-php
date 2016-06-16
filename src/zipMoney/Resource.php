@@ -58,7 +58,7 @@ class Resource
      * @param null $vEnvironment
      * @return null|string
      */
-    public function getUrl($resource, $env, $query_string = null)
+    public static function getUrl($resource, $env, $query_string = null)
     {
         $url      = null;
 

@@ -1,4 +1,6 @@
 <?php
+namespace zipMoney\Request;
+
 /**
  * @category  ZipMoney
  * @package   ZipMoney_SDK
@@ -7,5 +9,23 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link      http://www.zipmoney.com.au/
  */
-class ZipMoney_Exception_Http extends Exception
-{}
+
+
+
+class Order{
+
+  public  $id = null;
+
+  public  $tax = null; 
+
+  public  $shipping_tax = null;
+
+  public  $shipping_value = null;
+  
+  public  $discount_amount = null;
+
+  public  $total = null;
+
+  public  $detail = array();
+
+}

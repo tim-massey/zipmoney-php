@@ -119,7 +119,7 @@ class ApiTest extends TestZipMoney
 
         $response      = $checkout->process();
         $responseArray = $response->toArray();
-        // print_r($responseArray);
+                
         $txn_id  = $responseArray['txn_id'];
 
         $this->assertTrue($response->isSuccess());                  // Check if the response is success

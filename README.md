@@ -374,5 +374,240 @@ try{
 }
 ```
 
+## Notification Implementation
+#### Webhook Class
+
+```php
+# Create a class which extends to the base webhook class
+class ZipMoneyWebHook extends \zipMoney\Webhook\Webhook
+{
+    /**
+     * Process Authorisation Success
+     * @param  $response
+     */
+    protected function _eventAuthSuccess($response){
+      // Code
+    }  
+
+    /**
+     * Process Authorisation Failure
+     * @param  $response
+     */
+    protected function _eventAuthFail($response){
+        // Code 
+    }
+
+    /**
+     * Process Authorisation Review 
+     * @param  $response
+     */
+    protected function _eventAuthReview($response){
+        // Code
+    }
+    
+    /**
+     * Process Authorisation Review 
+     * @param  $response
+     */
+    protected function _eventAuthDeclined($response){        
+        // Code
+    }
+    
+    /**
+     * Process Cancel Success 
+     * @param  $response
+     */
+    protected function _eventCancelSuccess($response){
+        // Code
+    }
+
+    /**
+     * Process Cancel Fail 
+     * @param  $response
+     */
+    protected function _eventCancelFail($response){        
+        // Code
+    }
+
+    /**
+     * Process Capture Success 
+     * @param  $response
+     */
+    protected function _eventCaptureSuccess($response){
+        // Code
+    }
+
+    /**
+     * Process Capture Failure 
+     * @param  $response
+     */
+    protected function _eventCaptureFail($response){
+        // Code
+    }
+
+    /**
+     * Process Refund Success 
+     * @param  $response
+     */
+    protected function _eventRefundSuccess($response){
+        // Code
+    }
+
+    /**
+     * Process Refund Fail 
+     * @param  $response
+     */
+    protected function _eventRefundFail($response){
+       // Code
+    }
+
+    /**
+     * Process Order Cancel
+     * @param  $response
+     */
+    protected function _eventOrderCancel($response){
+       // Code
+    }
+    
+    /**
+     * Process Charge Success 
+     * @param  $response
+     */
+    protected function _eventChargeSuccess($response){
+       // Code
+    }
+    
+    /**
+     * Process Charge Fail 
+     * @param  $response
+     */
+    protected function _eventChargeFail($response){
+       // Code
+    }
+    
+    /**
+     * Process Config Update 
+     * @param  $response
+     */
+    protected function _eventConfigUpdate($response){
+      // Code
+    }
+}
+
+```
+#### In your controller class 
+
+```php
+# The following code should be triggered by the webhook url.
+public function subscribeAction(){    
+    try{
+      $webhookTest  = new ZipMoneyWebHook();
+      $webhookTest->listen();
+    } catch(Exception $e){
+      echo $e->getMessage();
+    }
+}
+```
+
+## Express Checkout Implementation
+```php
+#Extends the base express class and implement the following required methods.
+
+class ZipMoneyExpress extends Express
+{
+    protected function _actionGetQuoteDetails($params)
+    {
+      $response = array("_actionGetQuoteDetails");
+
+      $this->sendResponse($response);
+
+    }
+
+    protected function _actionGetShippingMethods($params)
+    {
+      $response = array("_actionGetShippingMethods");
+
+      $this->sendResponse($response);
+
+    }
+
+    protected function _actionConfirmShippingMethods($params)
+    {
+      $response = array("_actionConfirmShippingMethods");
+
+      $this->sendResponse($response);
+
+    }
+
+    protected function _actionConfirmOrder($params)
+    {
+      $response = array("_actionConfirmOrder");
+
+      $this->sendResponse($response);
+
+    }
+}
+```
+
+### In your controller class
+```php
+# In the  controller class triggered by the express webhook url. 
+# Note:- Express webhook is different from the normal notification webhook.
+
+class ExpressController {
+    protected $_expressApiObj;
+    
+    public function __construct()
+    {
+        $this->_expressApiObj  = new ZipMoneyExpress();
+    }
+
+    /*
+     * Triggred by url http://yourdomain.com.au/zipmoneypayment/getQuoteDetails
+     */
+    public function getQuoteDetailsAction(){
+        try{
+        $this->_expressApiObj->listen('quotedetails');
+        } catch(Exception $e){
+          echo $e->getMessage();
+        }
+    }
+
+    /*
+     * Triggred by url http://yourdomain.com.au/zipmoneypayment/getShippingMethods
+     */
+    public function getShippingMethodsAction(){
+        try{
+        $this->_expressApiObj->listen('shippingmethods');
+        } catch(Exception $e){
+          echo $e->getMessage();
+        }
+    }
+    
+    /*
+     * Triggred by url http://yourdomain.com.au/zipmoneypayment/confirmShippingMethod
+     */
+    public function confirmShippingMethodAction(){
+        try{
+          $this->_expressApiObj->listen('confirmshippingmethod');
+        } catch(Exception $e){
+          echo $e->getMessage();
+        }
+    } 
+    
+     /*
+     * Triggred by url http://yourdomain.com.au/zipmoneypayment/confirmOrder
+     */
+    public function confirmOrderAction(){
+        try{
+          $this->_expressApiObj->listen('confirmorder');
+        } catch(Exception $e){
+          echo $e->getMessage();
+        }
+    }
+}
+```
+
+
 ## License
 The package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).

@@ -63,9 +63,9 @@ class Resource
         $url      = null;
 
         if(Configuration::isSandbox($env)) {
-            $base_url = Configuration::ENV_TEST_BASE_URL;
-        } else if(Configuration::_isEnvTest($env)) {
-            $base_url = Configuration::ENV_LIVE_BASE_URL;
+          $base_url = Configuration::ENV_TEST_BASE_URL;
+        } else {
+          $base_url = Configuration::ENV_LIVE_BASE_URL;
         }
         
         if ($base_url && $resource) {

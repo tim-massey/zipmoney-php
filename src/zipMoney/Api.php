@@ -175,11 +175,11 @@ class Api
     /**
      * Call heartbeat method on the endpoint
      *
-     * @return zipMoney\Response
+     * @return Response
      */
     public function heartbeat()
     {
-        return $this->request(Resource::RESOURCE_HEARBEAT, $params);
+        return $this->request(Resource::RESOURCE_HEART_BEAT, array());
     }
 
     /**

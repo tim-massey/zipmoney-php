@@ -62,7 +62,7 @@ class Api
         $resource = Resource::get($resource,$method,$this->_options);
 
         if(!isset($resource) || empty($resource))
-            throw new \zipMoney\Exception("Api resource not available", 1);
+            throw new \Exception("Api resource not available", 1);
 
         $payload = Util::objectToArray($payload);
 
@@ -78,7 +78,7 @@ class Api
         }
 
 
-       return new \zipMoney\Response($response);
+       return new Response($response);
     }
 
 
@@ -86,7 +86,7 @@ class Api
      * Call checkout method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function checkout($params)
     {
@@ -98,7 +98,7 @@ class Api
      * Call cancel method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function cancel($params)
     {               
@@ -109,7 +109,7 @@ class Api
      * Call quote method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function quote($params)
     {        
@@ -120,7 +120,7 @@ class Api
      * Call refund method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function refund($params)
     {
@@ -132,7 +132,7 @@ class Api
      * Call query method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function query($params)
     {       
@@ -143,7 +143,7 @@ class Api
      * Call capture method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function capture($params)
     {       
@@ -154,7 +154,7 @@ class Api
      * Call settings method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function settings($params)
     {        
@@ -165,7 +165,7 @@ class Api
      * Call configure method on the endpoint
      *
      * @param  $params
-     * @return zipMoney\Response
+     * @return Response
      */
     public function configure($params)
     {    

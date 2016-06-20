@@ -21,8 +21,6 @@ class Api
     protected $_merchantKey = null;
     
     protected $_client = null;
-        
-    private   $_version = "1.0.0";
 
     private   $_options = array();
     
@@ -58,7 +56,6 @@ class Api
      */
     public function request($resource, $payload = null, $timeout = 60)
     {
-        $config   = array('timeout' => $timeout);
         
         $method   = isset($payload) ? "POST" : "GET";
 
